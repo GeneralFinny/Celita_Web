@@ -122,25 +122,37 @@
         document.getElementById("translation-form").addEventListener("submit", function(event) {
             event.preventDefault();
             const inputText = document.getElementById("input-text").value;
-
-            // Simulate bot response (replace with actual API call)
-            // Here, we format the bot response as "Translated: (translated text)"
-            const botResponse = `Translated: ${inputText} - Keep chatting :).`;
-
-            const chatContainer = document.querySelector(".chat-container");
-            const userMessage = document.createElement("div");
-            userMessage.className = "user-message";
-            userMessage.textContent = inputText;
-            chatContainer.appendChild(userMessage);
-
-            const botMessage = document.createElement("div");
-            botMessage.className = "bot-message";
-            botMessage.textContent = botResponse;
-            chatContainer.appendChild(botMessage);
-
-            // Clear input field
-            document.getElementById("input-text").value = "";
+    
+            // Replace this part with your actual translation logic
+            fetch("https://d6d1-136-158-26-51.ngrok-free.app/translate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ "input_text": inputText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const chatContainer = document.querySelector(".chat-container");
+    
+                // Create a user message
+                const userMessage = document.createElement("div");
+                userMessage.className = "user-message";
+                userMessage.textContent = `You: ${inputText}`;
+                chatContainer.appendChild(userMessage);
+    
+                // Create a bot message with the translation result
+                const botMessage = document.createElement("div");
+                botMessage.className = "bot-message";
+                botMessage.textContent = `Bot: Translated: ${data.translated_text}`;
+                chatContainer.appendChild(botMessage);
+    
+                // Clear input field
+                document.getElementById("input-text").value = "";
+            })
+            .catch(error => console.error(error));
         });
     </script>
+    
 </body>
 </html>
