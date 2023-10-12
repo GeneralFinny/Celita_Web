@@ -64,6 +64,10 @@
             font-size: 14px;
             color: #888;
         }
+        .chat-controls {
+            display: flex;
+            flex-wrap: wrap;
+        }
         .chat-container::-webkit-scrollbar {
         width: 10px; /* Set the width of the scrollbar */
     }
@@ -114,7 +118,7 @@
 
         /* Style form input and button */
         input[type="text"] {
-            width: 96%; /* Make the input take 100% width of its parent container */
+            width: 100%; /* Make the input take 100% width of its parent container */
             max-width: 100%; /* Limit the input's width to the container's width */
             padding: 10px;
             border: 1px solid #1d1a1a;
@@ -282,10 +286,9 @@
             <!-- Chat messages will be displayed here -->
         </div>
     
-        <form id="translation-form">
-            <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." style="width: 96%;" autocomplete="off">
-            <br>
-            <input type="submit" value="Translate" style="width: 100%;">
+        <form id="translation-form" class="chat-controls">
+            <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." autocomplete="off">
+            <input type="submit" value="Translate">
         </form>
     </div>
     <button id="feedback-button"><i class="fas fa-comment"></i>  Send Feedback</button>
