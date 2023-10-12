@@ -142,12 +142,12 @@
             chatContainer.appendChild(translatingText);
 
             // Replace this part with your actual translation logic
-            fetch("https://alive-actually-cause.glitch.me", {
-                method: "POST",
+            fetch('/translate', { // Use the relative URL for your Glitch app
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ "input_text": inputText })
+                body: JSON.stringify({ input_text: inputText })
             })
             .then(response => response.json())
             .then(data => {
