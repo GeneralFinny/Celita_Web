@@ -253,7 +253,19 @@
         #close-feedback:hover {
             color: #676767; /* Text color on hover */
         }
-        
+        @media (max-width: 768px) {
+    /* Adjust styles for screens up to 768px wide */
+            header {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Adjust styles for screens up to 480px wide (typical smartphone width) */
+            header {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -276,7 +288,7 @@
             <input type="submit" value="Translate" style="width: 100%;">
         </form>
     </div>
-    <button id="feedback-button"><i class="fas fa-comment"></i> Send Feedback</button>
+    <button id="feedback-button"><i class="fas fa-comment"></i>  Send Feedback</button>
 
     <!-- Feedback form container -->
     <div id="feedback-container">
