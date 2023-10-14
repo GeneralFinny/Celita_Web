@@ -211,3 +211,17 @@ document.getElementById("translation-form").addEventListener("submit", function(
     })
     .catch(error => console.error(error));
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('header');
+    const hideButton = document.getElementById('hide-header-button');
+
+    hideButton.addEventListener('click', function() {
+        if (header.style.display === 'none' || header.style.display === '') {
+            header.style.display = 'block';
+            hideButton.innerHTML = '<i class="fas fa-eye"></i>';
+        } else {
+            header.style.display = 'none';
+            hideButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        }
+    });
+});
