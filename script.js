@@ -152,3 +152,57 @@ toggleSwitch.addEventListener('change', function () {
         });
     }
 });
+
+
+
+        // Handle the translation form submission
+        document.getElementById("translation-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const inputText = document.getElementById("input-text").value;
+
+            // Create a user message
+            const chatContainer = document.querySelector(".chat-container");
+            const userMessage = document.createElement("div");
+            userMessage.className = "user-message";
+            userMessage.textContent = `You: ${inputText}`;
+            chatContainer.appendChild(userMessage);
+
+            // Show a "Translating..." message
+            const translatingText = document.createElement("div");
+            translatingText.className = "translating-text";
+            translatingText.textContent = "Translating...";
+            chatContainer.appendChild(translatingText);
+
+            // Replace this part with your actual translation logic
+            fetch("http://127.0.0.1:3000/translate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ "input_text": inputText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove the "Translating..." text
+                chatContainer.removeChild(translatingText);
+
+                // Check if the "translated_text" property exists in the response data
+                if (data.translated_text) {
+                    // Create a bot message with the translation result
+                    const botMessage = document.createElement("div");
+                    botMessage.className = "bot-message";
+                    botMessage.textContent = `Translated: ${data.translated_text}`;
+                    chatContainer.appendChild(botMessage);
+                } else {
+                    // If there's no "translated_text," display an error message or handle the situation accordingly
+                    console.error("Translation error: Translated text not found in the response.");
+                }
+
+                // Scroll to the bottom of the chat container to show the latest message
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // Clear input field
+                document.getElementById("input-text").value = "";
+            })
+            .catch(error => console.error(error));
+        });
