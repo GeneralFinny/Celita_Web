@@ -4,430 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Celita Translation App</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <style>
-        /* Reset default browser styles */
-        body, h1, h2, p, ul, li, button, input {
-            margin: 0;
-            padding: 0;
-            border: none;
-            list-style: none;
-            text-decoration: none;
-        }
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-        /* Set a modern font */
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #151d1a; /* Grey background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        /* Create a container for your content */
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            margin-top: 70px; /* Account for the header height */
-            background-color: #131414;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        /* Style the header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: #232323;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-            z-index: 1;
-        }
-
-        /* Style headings */
-        h1, h2 , h3{
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .experimental-text {
-            font-size: 14px;
-            color: #888;
-        }
-        .chat-controls {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .chat-container::-webkit-scrollbar {
-        width: 10px; /* Set the width of the scrollbar */
-    }
-
-    .chat-container::-webkit-scrollbar-thumb {
-        background-color: #333; /* Thumb color */
-        border-radius: 5px; /* Rounded corners for the thumb */
-    }
-
-    .chat-container::-webkit-scrollbar-track {
-        background-color: #202020; /* Track color */
-    }
-
-    /* Dark mode scrollbar for Firefox */
-    .chat-container {
-        scrollbar-color: #333 #202020; /* Thumb color and track color */
-    }
-
-        /* Style the chat interface */
-        .chat-container {
-            max-height: 300px;
-            height: 250px;
-            overflow-y: scroll; /* Make the chat container scrollable */
-            background-color: #202020;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            scrollbar-color: #333 #202020; /* Thumb color and track color */
-            scrollbar-width: thin; /* Set the width of the scrollbar */
-            scrollbar-color: #333 #202020; /* Thumb color and track color for Edge */
-        }
-
-        .user-message {
-            background-color: #604cf5;
-            color: #fff;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-
-        .bot-message {
-            background-color: #202020;
-            color: #ffffff;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-
-        /* Style form input and button */
-        input[type="text"] {
-            width: 100%; /* Make the input take 100% width of its parent container */
-            max-width: 100%; /* Limit the input's width to the container's width */
-            padding: 10px;
-            border: 1px solid #1d1a1a;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            background-color: #161515; /* Replace with your desired color code for the text box */
-            color: #fff;
-            font-size: 18px;
-        }
-
-        /* Style form button */
-        #translation-form input[type="submit"] {
-            width: 100%;
-            background-color: #0f976c; /* Replace with your desired color code for the button */
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        #translation-form input[type="submit"]:hover {
-            background-color: #214d37; /* Replace with your desired color code for the button on hover */
-            
-        }
-
-        /* Style the "Translating..." text */
-        .translating-text {
-            color: #fff;
-           
-        }
-        .clear-button {
-            background: none;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 10px; /* Add margin below the button */
-        }
-
-        .clear-button i {
-            margin-bottom: 10px; /* Add some spacing between the icon and text */
-        }
-
-                /* Your existing styles... */
-
-        /* Styles for the feedback button */
-        @media screen and (max-width: 600px){
-            
-        }
-        #feedback-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #373df5;
-            color: #fff;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-
-        /* Styles for the feedback form container */
-        #feedback-container {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #202020;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            z-index: 2;
-            color: #fff; /* White text color */
-        }
-
-        /* Styles for the close button */
-        #close-feedback {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        /* Margin for form elements */
-        #feedback-form label,
-        #feedback-form input,
-        #feedback-form button {
-            margin: 10px 0;
-        }
-
-        /* Style for the "Send" button */
-        #send-feedback {
-            background-color: #1a9e5e;
-            color: #fff;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-        }
-        #translation-form input[type="submit"]:hover {
-    background-color: #214d37; /* Background color on hover */
-    color: #ffffff; /* Text color on hover */
-        }
-
-        /* Add hover effect to the "Clear History" button */
-        .clear-button:hover {
-            color: #848484; /* Text color on hover */
-        }
-
-        /* Add hover effect to the "Send Feedback" button */
-        #feedback-button:hover {
-            background-color: #24208c; /* Background color on hover */
-            color: #ffffff; /* Text color on hover */
-        }
-
-        /* Add hover effect to the "Send" button in the feedback form */
-        #send-feedback:hover {
-            background-color: #214d37; /* Background color on hover */
-            color: #ffffff; /* Text color on hover */
-        }
-
-        /* Add hover effect to the close button in the feedback form */
-        #close-feedback:hover {
-            color: #676767; /* Text color on hover */
-        }
-        @media (max-width: 768px) {
-    /* Adjust styles for screens up to 768px wide */
-            header {
-                font-size: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            /* Adjust styles for screens up to 480px wide (typical smartphone width) */
-            header {
-                font-size: 18px;
-            }
-        }
-    </style>
 </head>
-<body>
-    <header>
+<body class="dark-mode">
+    <header class="dark-mode">
         <h2>Celita Translation App</h2>
-        <p class="experimental-text">This webpage is experimental and will improve over time</p>
+        <p class="experimental-text dark-mode">This webpage is experimental and will improve over time</p>
+        <label class="switch">
+            <input type="checkbox" id="toggle-theme">
+            <span class="slider round"></span>
+        </label>
     </header>
     
-    <div class="container">
-        <h3>Chat with Translation Bot</h3>
-        <button id="clear-history" class="clear-button"><i class="fas fa-trash-alt"></i> Clear History</button>
+    <div class="container dark-mode">
+        <h3 class="dark-mode">Chat with Translation Bot</h3>
+        <button id="clear-history" class="clear-button dark-mode"><i class="fas fa-trash-alt"></i> Clear History</button>
     
-        <div class="chat-container">
+        <div class="chat-container dark-mode">
             <!-- Chat messages will be displayed here -->
         </div>
     
         <form id="translation-form" class="chat-controls">
-            <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." autocomplete="off">
-            <input type="submit" value="Translate">
+            <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." autocomplete="off" class="dark-mode">
+            <input type="submit" value=">" class="dark-mode">
         </form>
     </div>
-    <button id="feedback-button"><i class="fas fa-comment"></i>  Send Feedback</button>
+    <button id="feedback-button" class="dark-mode"><i class="fas fa-comment"></i>  Send Feedback</button>
 
     <!-- Feedback form container -->
-    <div id="feedback-container">
-        <button id="close-feedback" title="Close"><i class="fas fa-times"></i></button>
+    <div id="feedback-container" class="dark-mode">
+        <button id="close-feedback" title="Close" class="dark-mode"><i class="fas fa-times"></i></button>
         <form id="feedback-form">
-            <label for="translated-word">Translated Word:</label>
-            <input type="text" id="translated-word" name="translated_word" required autocomplete="off">
-            <label for="suggested-translation">Suggested Translation:</label>
-            <input type="text" id="suggested-translation" name="suggested_translation" required autocomplete="off">
-            <button id="send-feedback"><i class="fas fa-paper-plane"></i> Send</button>
+            <label for="translated-word" class="dark-mode">Translated Phrase:</label>
+            <input type="text" id="translated-word" name="translated_word" required autocomplete="off" class="dark-mode">
+            <label for="suggested-translation" class="dark-mode">Suggested Translation:</label>
+            <input type="text" id="suggested-translation" name="suggested_translation" required autocomplete="off" class="dark-mode">
+            <button id="send-feedback" class="dark-mode"><i class="fas fa-paper-plane"></i> Send</button>
         </form>
     </div>
 
 
-    <script>
-        // Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyCxZHo4Hm-HmiXEHcTpdYs8STFZjCbEMe0",
-            authDomain: "feedback-5c4e6.firebaseapp.com",
-            databaseURL: "https://feedback-5c4e6-default-rtdb.firebaseio.com",
-            projectId: "feedback-5c4e6",
-            storageBucket: "feedback-5c4e6.appspot.com",
-            messagingSenderId: "1000868145057",
-            appId: "1:1000868145057:web:61771dad64efdd6822cde0"
-        };
-    
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        var database = firebase.database();
-        var databaseRef = database.ref("translation_data"); // Database reference
-    
-        // Function to send feedback data to Firebase
-        function sendFeedbackToFirebase(translatedWord, suggestedTranslation) {
-            var feedbackData = {
-                "Translated word": translatedWord,
-                "Suggested translation": suggestedTranslation
-            };
-    
-            // Push the data to the database
-            databaseRef.push(feedbackData);
-        }
-    
-        // Handle the translation form submission
-        document.getElementById("translation-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const inputText = document.getElementById("input-text").value;
-    
-            // Create a user message
-            const chatContainer = document.querySelector(".chat-container");
-            const userMessage = document.createElement("div");
-            userMessage.className = "user-message";
-            userMessage.textContent = `You: ${inputText}`;
-            chatContainer.appendChild(userMessage);
-    
-            // Show a "Translating..." message
-            const translatingText = document.createElement("div");
-            translatingText.className = "translating-text";
-            translatingText.textContent = "Translating...";
-            chatContainer.appendChild(translatingText);
-    
-            // Replace this part with your actual translation logic
-            fetch("http://127.0.0.1:3000/translate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ "input_text": inputText })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Remove the "Translating..." text
-                chatContainer.removeChild(translatingText);
-    
-                // Check if the "translated_text" property exists in the response data
-                if (data.translated_text) {
-                    // Create a bot message with the translation result
-                    const botMessage = document.createElement("div");
-                    botMessage.className = "bot-message";
-                    botMessage.textContent = `Translated: ${data.translated_text}`;
-                    chatContainer.appendChild(botMessage);
-                } else {
-                    // If there's no "translated_text," display an error message or handle the situation accordingly
-                    console.error("Translation error: Translated text not found in the response.");
-                }
-    
-                // Scroll to the bottom of the chat container to show the latest message
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-    
-                // Clear input field
-                document.getElementById("input-text").value = "";
-            })
-            .catch(error => console.error(error));
-        });
-    
-        // Handle the feedback form submission
-        document.getElementById("feedback-form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission behavior
-
-            // Retrieve feedback form input values
-            const translatedWord = document.getElementById("translated-word").value;
-            const suggestedTranslation = document.getElementById("suggested-translation").value;
-
-            // Send feedback data to Firebase
-            sendFeedbackToFirebase(translatedWord, suggestedTranslation);
-
-            // Clear feedback form input fields
-            document.getElementById("translated-word").value = "";
-            document.getElementById("suggested-translation").value = "";
-
-            // Display a confirmation message
-            const feedbackContainer = document.getElementById("feedback-container");
-            const confirmationMessage = document.createElement("p");
-            confirmationMessage.textContent = "Message Sent!";
-            confirmationMessage.style.color = "#0f976c"; // Green color
-            feedbackContainer.appendChild(confirmationMessage);
-
-            // Automatically remove the confirmation message after a few seconds
-            setTimeout(function() {
-                feedbackContainer.removeChild(confirmationMessage);
-            }, 3000); // Remove the message after 3 seconds (adjust as needed)
-        });
-    
-        // Clear history button functionality
-        document.getElementById("clear-history").addEventListener("click", function() {
-            const chatContainer = document.querySelector(".chat-container");
-            chatContainer.innerHTML = ""; // Clear chat history
-        });
-    
-        // Show feedback form when clicking the feedback button
-        document.getElementById("feedback-button").addEventListener("click", function() {
-            document.getElementById("feedback-container").style.display = "block";
-        });
-    
-        document.getElementById("close-feedback").addEventListener("click", function() {
-        document.getElementById("feedback-container").style.display = "none";
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

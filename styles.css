@@ -1,0 +1,394 @@
+/* Reset default browser styles */
+body,
+h1,
+h2,
+p,
+ul,
+li,
+button,
+input {
+    margin: 0;
+    padding: 0;
+    border: none;
+    list-style: none;
+    text-decoration: none;
+}
+
+/* Set a modern font */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #151d1a; /* Grey background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Create a container for your content */
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 70px; /* Account for the header height */
+    background-color: #131414;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+
+/* Style the header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #232323;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    z-index: 1;
+}
+
+/* Style headings */
+h1,
+h2,
+h3 {
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.experimental-text {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Chat container scrollbar styles */
+.chat-container::-webkit-scrollbar {
+    width: 10px; /* Set the width of the scrollbar */
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: #333; /* Thumb color */
+    border-radius: 5px; /* Rounded corners for the thumb */
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background-color: #202020; /* Track color */
+}
+
+/* Dark mode scrollbar for Firefox */
+.chat-container {
+    scrollbar-color: #333 #202020; /* Thumb color and track color */
+}
+
+/* Style the chat interface */
+/* Style the chat interface */
+.chat-container {
+    max-height: 300px;
+    height: 250px;
+    overflow-y: scroll; /* Make the chat container scrollable */
+    background-color: #202020;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: calc(100% - 40px); /* Adjusted width to align with the translate button */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    scrollbar-color: #333 #202020; /* Thumb color and track color */
+    scrollbar-width: thin; /* Set the width of the scrollbar */
+}
+.user-message {
+    background-color: #604cf5;
+    color: #fff;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.bot-message {
+    background-color: #202020;
+    color: #ffffff;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+
+/* Style the chat interface */
+.chat-container {
+    max-height: 300px;
+    height: 250px;
+    overflow-y: scroll; /* Make the chat container scrollable */
+    background-color: #202020;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 100%; /* Adjusted width to occupy the entire container */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    scrollbar-color: #333 #202020; /* Thumb color and track color */
+    scrollbar-width: thin; /* Set the width of the scrollbar */
+}
+
+/* Style form input and button */
+input[type="text"] {
+    width: calc(89% - 11px); /* Adjusted width to occupy 70% of the container */
+    padding: 10px;
+    border: 1px solid #1d1a1a;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #161515; /* Replace with your desired color code for the text box */
+    color: #fff;
+    font-size: 18px;
+}
+
+/* Style form button */
+#translation-form input[type="submit"] {
+    width: calc(10% - 10px); /* Adjusted width to occupy 30% of the container */
+    background-color: #0f976c; /* Replace with your desired color code for the button */
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#translation-form input[type="submit"]:hover {
+    background-color: #214d37; /* Background color on hover */
+    color: #ffffff; /* Text color on hover */
+}
+
+/* Style the "Translating..." text */
+.translating-text {
+    color: #fff;
+}
+
+.clear-button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px; /* Add margin below the button */
+}
+
+.clear-button i {
+    margin-bottom: 10px; /* Add some spacing between the icon and text */
+}
+
+/* Your existing styles... */
+
+/* Styles for the feedback button */
+#feedback-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #373df5;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+#feedback-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #202020;
+    padding: 20px; /* Adjusted padding to remove extra space on all sides */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 2;
+    color: #fff; /* White text color */
+    max-width: 90%; /* Adjusted maximum width to make it responsive */
+    width: auto; /* Set width to auto to allow it to adjust based on the content */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+/* Style for the input elements inside the feedback container */
+#feedback-form input[type="text"] {
+    width: calc(100% - 20px); /* Adjusted width to accommodate padding */
+    max-width: calc(100% - 20px); /* Adjusted max-width to accommodate padding */
+    padding: 10px;
+    border: 1px solid #1d1a1a;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #161515; /* Replace with your desired color code for the text box */
+    color: #fff;
+    font-size: 18px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+/* Styles for the close button */
+#close-feedback {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Margin for form elements */
+#feedback-form label,
+#feedback-form input,
+#feedback-form button {
+    margin: 10px 0;
+}
+
+/* Style for the "Send" button */
+#send-feedback {
+    background-color: #1a9e5e;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Add hover effect to the "Clear History" button */
+.clear-button:hover {
+    color: #848484; /* Text color on hover */
+}
+
+/* Add hover effect to the "Send Feedback" button */
+#feedback-button:hover {
+    background-color: #24208c; /* Background color on hover */
+    color: #ffffff; /* Text color on hover */
+}
+
+/* Add hover effect to the "Send" button in the feedback form */
+#send-feedback:hover {
+    background-color: #214d37; /* Background color on hover */
+    color: #ffffff; /* Text color on hover */
+}
+
+/* Add hover effect to the close button in the feedback form */
+#close-feedback:hover {
+    color: #676767; /* Text color on hover */
+}
+
+/* Add these styles for the dark mode switch */
+.switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Light mode specific styles */
+body.light-mode {
+    background-color: #f4f4f4; /* Light grey background for light mode */
+}
+
+.container.light-mode {
+    background-color: #ffffff; /* White background for light mode */
+}
+
+header.light-mode {
+    background-color: #f8f9fa; /* Light grey background for light mode */
+    color: #212529; /* Dark text color for light mode */
+}
+
+h1.light-mode,
+h2.light-mode,
+h3.light-mode {
+    color: #212529; /* Dark text color for light mode */
+}
+
+.experimental-text.light-mode {
+    color: #6c757d; /* Grey text color for light mode */
+}
+
+.chat-container.light-mode {
+    background-color: #ffffff; /* White background for light mode */
+}
+
+/* Additional light mode specific styles can be added here */
+
+/* Styles for the dark mode switch in light mode */
+.switch.light-mode {
+    top: 20px;
+    right: 20px;
+}
+
+.slider.light-mode {
+    background-color: #ccc;
+}
+
+.slider.light-mode:before {
+    background-color: #212529;
+}
+
+input:checked.light-mode + .slider.light-mode {
+    background-color: #2196F3;
+}
+
+input:focus.light-mode + .slider.light-mode {
+    box-shadow: 0 0 1px #2196F3;
+}
