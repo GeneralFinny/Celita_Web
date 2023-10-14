@@ -384,8 +384,8 @@ input:focus.light-mode + .slider.light-mode {
 }
 #hide-header-button {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
     background: none;
     border: none;
     color: #fff;
