@@ -130,7 +130,7 @@ input[type="text"] {
 
 /* Style form button */
 #translation-form input[type="submit"] {
-    width: calc(10% - 10px); /* Adjusted width to occupy 30% of the container */
+    width: calc(5%); /* Adjusted width to occupy 30% of the container */
     background-color: #0f976c; /* Replace with your desired color code for the button */
     color: #ffffff;
     border: none;
