@@ -48,7 +48,7 @@ header {
     color: #ffffff;
     text-align: center;
     padding: 20px;
-    z-index: 1;
+    z-index: 0;
 }
 
 /* Style headings */
@@ -381,4 +381,15 @@ input:checked.light-mode + .slider.light-mode {
 
 input:focus.light-mode + .slider.light-mode {
     box-shadow: 0 0 1px #2196F3;
+}
+#hide-header-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1; /* Ensure the button stays on top of other elements */
 }
