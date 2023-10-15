@@ -176,7 +176,7 @@ document.getElementById("translation-form").addEventListener("submit", function(
     chatContainer.appendChild(translatingText);
 
     // Replace this part with your actual translation logic
-    fetch("http://127.0.0.1:8000/translate", {
+    fetch("http://127.0.0.1:8000/translate/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
