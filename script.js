@@ -163,20 +163,6 @@ document.getElementById('toggle-theme').addEventListener('change', function() {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const header = document.querySelector('header');
-    const hideButton = document.getElementById('hide-header-button');
-
-    hideButton.addEventListener('click', function() {
-        if (header.style.display === 'none' || header.style.display === '') {
-            header.style.display = 'block';
-            hideButton.innerHTML = '<i class="fas fa-eye"></i>';
-        } else {
-            header.style.display = 'none';
-            hideButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
-        }
-    });
-});
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -394,4 +380,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+});
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const chatContainer = document.querySelector('.chat-container');
+
+    if (isMobileDevice()) {
+        chatContainer.style.height = `${window.innerHeight}px`;
+    } else {
+        chatContainer.style.height = '300px';
+    }
 });
