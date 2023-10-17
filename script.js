@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatContainer = document.querySelector('.chat-container');
 
     if (isMobileDevice()) {
-        chatContainer.style.height = '60vh';
+        chatContainer.style.height = '20vh';
     } else {
         chatContainer.style.height = '300px';
     }
