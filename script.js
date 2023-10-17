@@ -130,87 +130,39 @@ document.getElementById("close-feedback").addEventListener("click", function () 
     document.getElementById("feedback-container").style.display = "none";
 });
 
-// Add this JavaScript to toggle between light and dark modes
-const toggleSwitch = document.querySelector('#toggle-theme');
-const body = document.querySelector('body');
-const headers = document.querySelectorAll('header, h1, h2, h3, .experimental-text, .clear-button, #feedback-button, #feedback-container, #close-feedback, #send-feedback, #translated-word, #suggested-translation');
+document.getElementById('toggle-theme').addEventListener('change', function() {
+    const container = document.querySelector('.container');
+    const header = document.querySelector('header');
+    const headings = document.querySelectorAll('h3');
+    const experimentalText = document.querySelector('.experimental-text');
+    const chatContainer = document.querySelector('.chat-container');
+    const translationForm = document.getElementById('translation-form');
 
-toggleSwitch.addEventListener('change', function () {
     if (this.checked) {
-        body.classList.remove('light-mode');
-        body.classList.add('dark-mode');
-        headers.forEach(item => {
-            item.classList.remove('light-mode');
-            item.classList.add('dark-mode');
+        container.classList.add('light-mode');
+        header.classList.add('light-mode');
+        headings.forEach(function(heading) {
+            heading.classList.add('light-mode');
         });
-    } else {
-        body.classList.remove('dark-mode');
+        experimentalText.classList.add('light-mode');
+        chatContainer.classList.add('light-mode');
+        translationForm.classList.add('light-mode');
         body.classList.add('light-mode');
-        headers.forEach(item => {
-            item.classList.remove('dark-mode');
-            item.classList.add('light-mode');
+    } else {
+        container.classList.remove('light-mode');
+        header.classList.remove('light-mode');
+        headings.forEach(function(heading) {
+            heading.classList.remove('light-mode');
         });
+        experimentalText.classList.remove('light-mode');
+        chatContainer.classList.remove('light-mode');
+        translationForm.classList.remove('light-mode');
+        body.classList.remove('light-mode');
     }
 });
 
 
 
-     // Handle the translation form submission
-document.getElementById("translation-form").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const inputText = document.getElementById("input-text").value;
-    const translateButton = document.getElementById("translation-form").querySelector('input[type="submit"]');
-    translateButton.disabled = true; // Disable the translate button
-
-    // Create a user message
-    const chatContainer = document.querySelector(".chat-container");
-    const userMessage = document.createElement("div");
-    userMessage.className = "user-message";
-    userMessage.textContent = `You: ${inputText}`;
-    chatContainer.appendChild(userMessage);
-
-    // Show a "Translating..." message
-    const translatingText = document.createElement("div");
-    translatingText.className = "translating-text";
-    translatingText.textContent = "Translating...";
-    chatContainer.appendChild(translatingText);
-
-    // Replace this part with your actual translation logic
-    fetch("https://deb9-136-158-26-7.ngrok-free.app/translate", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ "input_text": inputText })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Remove the "Translating..." text
-        chatContainer.removeChild(translatingText);
-
-        // Check if the "translated_text" property exists in the response data
-        if (data.translated_text) {
-            // Create a bot message with the translation result
-            const botMessage = document.createElement("div");
-            botMessage.className = "bot-message";
-            botMessage.textContent = `Translated: ${data.translated_text}`;
-            chatContainer.appendChild(botMessage);
-        } else {
-            // If there's no "translated_text," display an error message or handle the situation accordingly
-            console.error("Translation error: Translated text not found in the response.");
-        }
-
-        // Scroll to the bottom of the chat container to show the latest message
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
-        // Enable the translate button again
-        translateButton.disabled = false;
-
-        // Clear input field
-        document.getElementById("input-text").value = "";
-    })
-    .catch(error => console.error(error));
-});
 document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('header');
     const hideButton = document.getElementById('hide-header-button');
@@ -225,39 +177,207 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-document.addEventListener('DOMContentLoaded', function() {
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+
+
+    const chatContainer = document.querySelector('.chat-container');
+
+    // Function to display the initial bot greeting message
+    function displayInitialGreeting() {
+        const initialGreeting = "Hello, let's start translating!";
+        const messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container bot-message-container';
+
+        const botIcon = document.createElement('img');
+        botIcon.src = 'bot.png'; // Replace with the path to your bot icon image
+        botIcon.className = 'bot-icon';
+
+        const botMessage = document.createElement('div');
+        botMessage.className = 'bot-message';
+        botMessage.textContent = initialGreeting;
+        botMessage.title = `Sent at ${getCurrentTime()}`; // Add tooltip displaying the time
+
+        messageContainer.appendChild(botIcon);
+        messageContainer.appendChild(botMessage);
+        chatContainer.appendChild(messageContainer);
+
+        // Scroll to the bottom of the chat container to show the latest message
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    displayInitialGreeting();
+    let translationAllowed = true; // Flag to track whether the translation is allowed
+    let vulgarWords = []; // Initialize an empty array to store the vulgar words
+    let placeholderMessage;
+
     fetch('vulgar_words.txt')
         .then(response => response.text())
         .then(data => {
-            const vulgarWords = data.split('\n').map(word => word.trim());
-
-            document.getElementById('translation-form').addEventListener('submit', function(event) {
-                const inputText = document.getElementById('input-text').value;
-                if (containsVulgarWord(inputText, vulgarWords)) {
-                    alert('Your input contains a banned word. Please revise your message.');
-                    event.preventDefault();
-                }
-            });
-
-            document.getElementById('feedback-form').addEventListener('submit', function(event) {
-                const translatedWord = document.getElementById('translated-word').value;
-                const suggestedTranslation = document.getElementById('suggested-translation').value;
-                if (containsVulgarWord(translatedWord, vulgarWords) || containsVulgarWord(suggestedTranslation, vulgarWords)) {
-                    alert('Your input contains a banned word. Please revise your message.');
-                    event.preventDefault();
-                }
-            });
+            vulgarWords = data.split('\n').map(word => word.trim());
         })
         .catch(error => {
             console.error('Error fetching vulgar words:', error);
         });
-});
 
-function containsVulgarWord(text, vulgarWords) {
-    for (let i = 0; i < vulgarWords.length; i++) {
-        if (text.toLowerCase().includes(vulgarWords[i].toLowerCase())) {
-            return true;
+    function getCurrentTime() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    }
+
+    function displayUserMessage(inputText) {
+        const chatContainer = document.querySelector('.chat-container');
+
+        const messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container user-message-container';
+
+        const userMessage = document.createElement('div');
+        userMessage.className = 'user-message';
+        userMessage.textContent = inputText;
+        userMessage.title = `Sent at ${getCurrentTime()}`; // Add tooltip displaying the time
+
+        const userIcon = document.createElement('img');
+        userIcon.src = 'user.png'; // Replace with the path to your user icon image
+        userIcon.className = 'user-icon';
+
+        
+        messageContainer.appendChild(userMessage);
+        chatContainer.appendChild(messageContainer);
+
+        // Scroll to the bottom of the chat container to show the latest message
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    document.getElementById('translation-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const inputText = document.getElementById('input-text').value;
+        if (containsVulgarWord(inputText, vulgarWords)) {
+            displayCensoredUserMessage(inputText, vulgarWords);
+            clearInput();
+        } else {
+            translateText(inputText);
+        }
+    });
+
+
+    function translateText(inputText) {
+        const chatContainer = document.querySelector('.chat-container');
+    
+        // Display the user input with the user icon
+        displayUserMessage(inputText);
+    
+        // Create a placeholder message indicating the bot is still processing
+        placeholderMessage = displayBotPlaceholderMessage();
+    
+        // Perform the translation fetch
+        fetch("https://deb9-136-158-26-7.ngrok-free.app/translate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "input_text": inputText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('translation-form').reset();
+    
+            // Check if the "translated_text" property exists in the response data
+            if (data.translated_text) {
+                // Remove the placeholder message and add the actual translated text
+                updateBotMessage(data.translated_text);
+            } else {
+                // If there's no "translated_text," display an error message or handle the situation accordingly
+                console.error("Translation error: Translated text not found in the response.");
+            }
+    
+            // Scroll to the bottom of the chat container to show the latest message
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        })
+        .catch(error => {
+            // Display an error message and handle the error accordingly
+            console.error('Translation error:', error);
+        });
+    }
+    
+    function updateBotMessage(translatedText) {
+        const botIcon = placeholderMessage.querySelector('.bot-icon');
+        const botMessage = placeholderMessage.querySelector('.bot-message');
+        if (botIcon && botMessage) {
+            botMessage.textContent = translatedText;
         }
     }
-    return false;
-}
+
+    function displayCensoredUserMessage(inputText, vulgarWords) {
+        const chatContainer = document.querySelector('.chat-container');
+        
+        const messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container user-message-container';
+        
+        const userIcon = document.createElement('img');
+        userIcon.src = 'user.png'; // Replace with the path to your user icon image
+        userIcon.className = 'user-icon';
+        
+        const userMessage = document.createElement('div');
+        userMessage.className = 'user-message';
+        userMessage.textContent = ` ${censorText(inputText, vulgarWords)}`;
+        userMessage.title = `Sent at ${getCurrentTime()}`; // Add tooltip displaying the time
+        
+        
+        messageContainer.appendChild(userMessage);
+        chatContainer.appendChild(messageContainer);
+        
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'banned-message';
+        errorMessage.textContent = 'Banned words detected.';
+        
+        chatContainer.appendChild(errorMessage);
+        
+        // Scroll to the bottom of the chat container to show the latest message
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function clearInput() {
+        document.getElementById('input-text').value = '';
+    }
+
+    function containsVulgarWord(text, vulgarWords) {
+        for (let i = 0; i < vulgarWords.length; i++) {
+            if (text.toLowerCase().includes(vulgarWords[i].toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function censorText(text, vulgarWords) {
+        let censoredText = text;
+        for (let i = 0; i < vulgarWords.length; i++) {
+            const regex = new RegExp(`\\b${vulgarWords[i]}\\b`, 'gi');
+            censoredText = censoredText.replace(regex, "[CENSORED]");
+        }
+        return censoredText;
+    }
+
+    function displayBotPlaceholderMessage() {
+        const chatContainer = document.querySelector('.chat-container');
+    
+        // Create a placeholder message indicating the bot is still processing
+        const placeholderMessage = document.createElement('div');
+        placeholderMessage.className = 'message-container bot-message-container';
+        placeholderMessage.innerHTML = '<img src="bot.png" class="bot-icon" alt="Bot Icon"><div class="bot-message">...</div>';
+        chatContainer.appendChild(placeholderMessage);
+    
+        // Scroll to the bottom of the chat container to show the latest message
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+        return placeholderMessage; // Return the placeholder message
+    }
+
+
+
+});
+
