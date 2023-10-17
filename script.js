@@ -280,7 +280,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch("https://ccb8-136-158-26-7.ngrok-free.app/translate", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Cache-Control": "no-cache" // Add this line to set the Cache-Control header
             },
             body: JSON.stringify({ "input_text": inputText })
         })
