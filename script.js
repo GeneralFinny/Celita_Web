@@ -225,3 +225,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('vulgar_words.txt')
+        .then(response => response.text())
+        .then(data => {
+            const vulgarWords = data.split('\n').map(word => word.trim());
+
+            document.getElementById('translation-form').addEventListener('submit', function(event) {
+                const inputText = document.getElementById('input-text').value;
+                if (containsVulgarWord(inputText, vulgarWords)) {
+                    alert('Your input contains a banned word. Please revise your message.');
+                    event.preventDefault();
+                }
+            });
+
+            document.getElementById('feedback-form').addEventListener('submit', function(event) {
+                const translatedWord = document.getElementById('translated-word').value;
+                const suggestedTranslation = document.getElementById('suggested-translation').value;
+                if (containsVulgarWord(translatedWord, vulgarWords) || containsVulgarWord(suggestedTranslation, vulgarWords)) {
+                    alert('Your input contains a banned word. Please revise your message.');
+                    event.preventDefault();
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching vulgar words:', error);
+        });
+});
+
+function containsVulgarWord(text, vulgarWords) {
+    for (let i = 0; i < vulgarWords.length; i++) {
+        if (text.toLowerCase().includes(vulgarWords[i].toLowerCase())) {
+            return true;
+        }
+    }
+    return false;
+}
