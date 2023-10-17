@@ -130,36 +130,7 @@ document.getElementById("close-feedback").addEventListener("click", function () 
     document.getElementById("feedback-container").style.display = "none";
 });
 
-document.getElementById('toggle-theme').addEventListener('change', function() {
-    const container = document.querySelector('.container');
-    const header = document.querySelector('header');
-    const headings = document.querySelectorAll('h3');
-    const experimentalText = document.querySelector('.experimental-text');
-    const chatContainer = document.querySelector('.chat-container');
-    const translationForm = document.getElementById('translation-form');
 
-    if (this.checked) {
-        container.classList.add('light-mode');
-        header.classList.add('light-mode');
-        headings.forEach(function(heading) {
-            heading.classList.add('light-mode');
-        });
-        experimentalText.classList.add('light-mode');
-        chatContainer.classList.add('light-mode');
-        translationForm.classList.add('light-mode');
-        body.classList.add('light-mode');
-    } else {
-        container.classList.remove('light-mode');
-        header.classList.remove('light-mode');
-        headings.forEach(function(heading) {
-            heading.classList.remove('light-mode');
-        });
-        experimentalText.classList.remove('light-mode');
-        chatContainer.classList.remove('light-mode');
-        translationForm.classList.remove('light-mode');
-        body.classList.remove('light-mode');
-    }
-});
 
 
 
@@ -385,11 +356,15 @@ function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const chatContainer = document.querySelector('.chat-container');
 
     if (isMobileDevice()) {
-        chatContainer.style.height = `${window.innerHeight}px`;
+        chatContainer.style.height = '70vh';
     } else {
         chatContainer.style.height = '300px';
     }
