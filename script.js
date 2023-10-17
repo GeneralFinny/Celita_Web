@@ -212,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let translationAllowed = true; // Flag to track whether the translation is allowed
     let vulgarWords = []; // Initialize an empty array to store the vulgar words
     let placeholderMessage;
+    let translateButton;
 
     fetch('vulgar_words.txt')
         .then(response => response.text())
@@ -265,6 +266,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function translateText(inputText) {
+        const translateButton = document.querySelector('#translation-form input[type="submit"]');
+        translateButton.disabled = true; // Disable the translate button during the translation process
         const chatContainer = document.querySelector('.chat-container');
     
         // Display the user input with the user icon
@@ -281,7 +284,12 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ "input_text": inputText })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             document.getElementById('translation-form').reset();
     
@@ -292,14 +300,19 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 // If there's no "translated_text," display an error message or handle the situation accordingly
                 console.error("Translation error: Translated text not found in the response.");
+                translateButton.disabled = false;
             }
     
             // Scroll to the bottom of the chat container to show the latest message
             chatContainer.scrollTop = chatContainer.scrollHeight;
         })
         .catch(error => {
-            // Display an error message and handle the error accordingly
+            // Display an error message for network issues, but not for other errors
             console.error('Translation error:', error);
+            if (error.message === 'Network response was not ok') {
+                displayTranslationError();
+            }
+            translateButton.disabled = false;
         });
     }
     
@@ -308,6 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const botMessage = placeholderMessage.querySelector('.bot-message');
         if (botIcon && botMessage) {
             botMessage.textContent = translatedText;
+            translateButton.disabled = false;
         }
     }
 
