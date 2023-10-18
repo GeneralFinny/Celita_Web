@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Create a placeholder message indicating the bot is still processing
         const placeholderMessage = document.createElement('div');
         placeholderMessage.className = 'message-container bot-message-container';
-        placeholderMessage.innerHTML = '<img src="bot.png" class="bot-icon" alt="Bot Icon"><div class="bot-message">...</div>';
+        placeholderMessage.innerHTML = '<img src="bot.png" class="bot-icon" alt="Bot Icon"><div class="bot-message"><img src="l2.gif" alt="Loading..." width="15" height="15"></div>';
         chatContainer.appendChild(placeholderMessage);
     
         // Scroll to the bottom of the chat container to show the latest message
