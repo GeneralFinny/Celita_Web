@@ -19,16 +19,14 @@
    
     <div class="container dark-mode">
         <h3 class="dark-mode">Chat with Translation Bot</h3>
+      
         <button id="clear-history" class="clear-button dark-mode"><i class="fas fa-trash-alt"></i> Clear Chat</button>
-    
+        <button id="feedback-button" class="dark-mode"><i class="fas fa-comment"></i>  Send Feedback</button>
         <div class="chat-container dark-mode">
             <!-- Chat messages will be displayed here -->
         </div>
     
-        <form id="translation-form" class="chat-controls">
-            <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." autocomplete="off" class="dark-mode">
-            <input type="submit" value="Translate" class="dark-mode">
-        </form>
+        
     </div>
  
 
@@ -45,7 +43,11 @@
     </div>
 
     <div id="fixed-container">
-        <button id="feedback-button" class="dark-mode"><i class="fas fa-comment"></i>  Send Feedback</button>
+        <form id="translation-form" class="chat-controls">
+            <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." autocomplete="off" class="dark-mode">
+            <input type="submit" value=">" class="dark-mode">
+        </form>
+       
     </div>
 
 
