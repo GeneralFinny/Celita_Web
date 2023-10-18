@@ -467,7 +467,7 @@ input:focus.light-mode + .slider.light-mode {
 
 #fixed-container {
     position: fixed;
-    bottom: 50px; /* Adjust this value as needed */
+    bottom: 0px; /* Adjust this value as needed */
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
