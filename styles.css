@@ -31,14 +31,12 @@ body {
     margin: 0 auto;
     padding: 20px;
     /* Account for the header height */
-    background-color: #252525;
+    background-color: #1d1a1a;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     overflow: hidden;
-    position: fixed;
-    top: 50px; /* Adjust this value as needed */
-    left: 50%;
-    transform: translateX(-50%);
+    
+    margin-top: -150px;
 
     
 }
@@ -147,22 +145,22 @@ h3 {
     padding: 10px;
 }
 
-input[type="text"] {
-    width: calc(100% - 1px); /* Adjusted width to account for padding and margin */
+#translation-form input[type="text"] {
+    width: calc(100% - 80px); /* Adjusted width to accommodate the button width */
     padding: 10px;
     border: 1px solid #1d1a1a;
     border-radius: 5px;
     margin-bottom: 10px;
-    background-color: #161515;
+    background-color: #161515; /* Replace with your desired color code for the text box */
     color: #fff;
     font-size: 18px;
     box-sizing: border-box; /* Ensure padding and border are included in the width */
-    margin-right: 10px;
+    display: inline-block; /* Set the display property to inline-block */
 }
-/* Style form button */
+
 #translation-form input[type="submit"] {
-    width: calc(100%); 
-    background-color: #03a43e; 
+    width: 70px; /* Adjusted width for the button */
+    background-color: #03a43e;
     color: #ffffff;
     border: none;
     padding: 10px;
@@ -170,11 +168,8 @@ input[type="text"] {
     border-radius: 5px;
     font-weight: bold;
     font-size: 18px;
-    display: inline-block;
-    margin-right: 10px;
-} 
-
-
+    display: inline-block; /* Set the display property to inline-block */
+}
 #translation-form input[type="submit"]:hover {
     background-color: #115b15; /* Background color on hover */
     color: #ffffff; /* Text color on hover */
@@ -188,10 +183,11 @@ input[type="text"] {
 .clear-button {
     background: none;
     border: none;
-    color: #fff;
+    color: #ffffff;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     margin-top: 10px; /* Add margin below the button */
+    font-family: 'Roboto', sans-serif;
 }
 
 .clear-button i {
@@ -202,18 +198,17 @@ input[type="text"] {
 
 /* Styles for the feedback button */
 #feedback-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #373df5;
-    color: #fff;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
+    background: none; /* Remove background color */
+    color: #ffffff; /* Set the text color */
+    font-family: 'Roboto', sans-serif;
+    padding: 0; /* Adjust padding as needed */
+    cursor: pointer; /* Set the cursor to pointer on hover */
+    border: none; /* Remove border */
+    margin-left: 20px;
+    
+   
 }
+
 
 #feedback-container {
     display: none;
@@ -284,10 +279,8 @@ input[type="text"] {
 
 /* Add hover effect to the "Send Feedback" button */
 #feedback-button:hover {
-    background-color: #24208c; /* Background color on hover */
-    color: #ffffff; /* Text color on hover */
+    color: #848484; /* Change text color on hover */
 }
-
 /* Add hover effect to the "Send" button in the feedback form */
 #send-feedback:hover {
     background-color: #214d37; /* Background color on hover */
@@ -467,16 +460,20 @@ input:focus.light-mode + .slider.light-mode {
 
 #fixed-container {
     position: fixed;
-    bottom: 0px; /* Adjust this value as needed */
+    bottom: 1px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;
+    width: calc(100%);
     max-width: 600px;
     padding: 20px;
-    height: 50px;
+    height: 100px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     background-color: #2d2d2d;
     z-index: 1;
+    overflow: hidden;
+    margin: 0 auto;
+    box-sizing: border-box; 
+
 }
 
