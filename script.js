@@ -348,24 +348,31 @@ document.addEventListener('DOMContentLoaded', function () {
     
         return placeholderMessage; // Return the placeholder message
     }
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
 
-
-
-});
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const chatContainer = document.querySelector('.chat-container');
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
 
     if (isMobileDevice()) {
-        chatContainer.style.height = '60vh';
+        chatContainer.style.height = '70vh';
     } else {
         chatContainer.style.height = '300px';
     }
+
+
+
+
+
+
+    
 });
+
+
+
+
+    
+
+
