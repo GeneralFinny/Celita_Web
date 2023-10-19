@@ -145,9 +145,33 @@ h3 {
     padding: 10px;
 }
 
-#translation-form input[type="text"] {
-    width: calc(100% - 80px); /* Adjusted width to accommodate the button width */
+
+#fixed-container {
+    position: fixed;
+    bottom: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100%);
+    max-width: 600px;
     padding: 10px;
+    padding-left: 20px;
+    padding-top: 15px;
+    height: 70px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: #2d2d2d;
+    z-index: 1;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 20px;
+    box-sizing: border-box; 
+}
+
+
+#translation-form input[type="text"] {
+    width: calc(100% - 120px); /* Adjusted width to accommodate the button width */
+    padding: 10px;
+    height: 36px;
     border: 1px solid #1d1a1a;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -158,24 +182,143 @@ h3 {
     display: inline-block; /* Set the display property to inline-block */
 }
 
-#translation-form input[type="submit"] {
-    width: 70px; /* Adjusted width for the button */
-    background-color: #03a43e;
+#translation-form input[type="text"]:focus {
+    outline: none;
+}
+
+#translate-button {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+    padding: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    background-image: url('send.png');
+    background-size: 60%; /* Adjust the background size as needed */
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: -12px;
+   ;
+    
+}
+
+#translate-button:hover {
+    background-color: #4CAF50; /* Change this to your desired hover color */
+}
+
+#input-text:focus + #translate-button {
+    background-color: #4CAF50; /* Change this to your desired focus color */
+    width: 20px;
+    height: 20px;
+}
+
+#mic-button {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+    padding: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    background-image: url('mic.png');
+    background-size: 80%; /* Adjust the background size as needed */
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    top: -5px; /* Adjust this value to move the button upwards */
+  
+  
+}
+
+#options-button {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+    padding: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    background-image: url('addop.png');
+    background-size: 80%; /* Adjust the background size as needed */
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    top: -6px; /* Adjust this value to move the button upwards */
+    
+}
+#translate-button i, #mic-button i {
     color: #ffffff;
+    outline: none;
+}
+
+#translate-button:hover, #mic-button:hover {
+    background-color: transparent;
+    color: #848484;
+}
+
+#translate-button:hover i, #mic-button:hover i {
+    color: #848484;
+}
+
+#translation-options-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#image-button {
+    width: 20px;
+    background-color: transparent;
     border: none;
     padding: 10px;
     cursor: pointer;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 18px;
-    display: inline-block; /* Set the display property to inline-block */
-}
-#translation-form input[type="submit"]:hover {
-    background-color: #115b15; /* Background color on hover */
-    color: #ffffff; /* Text color on hover */
+    font-size: 25px;
+
+    outline: none;
 }
 
-/* Style the "Translating..." text */
+#image-button i {
+    color: #ffffff;
+}
+
+#image-button:hover {
+    background-color: transparent;
+    color: #848484;
+}
+
+#image-button:hover i {
+    color: #848484;
+}
+
+
+/* Additional options container */
+
+
+#close-options-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+
 .translating-text {
     color: #fff;
 }
@@ -194,7 +337,7 @@ h3 {
     margin-bottom: 10px; /* Add some spacing between the icon and text */
 }
 
-/* Your existing styles... */
+
 
 /* Styles for the feedback button */
 #feedback-button {
@@ -217,6 +360,24 @@ h3 {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #202020;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 100;
+    color: #fff;
+    max-width: 90%;
+    width: 500px;
+    box-sizing: border-box;
+    opacity: 1;
+}
+
+#additional-options-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #202020;
     padding: 20px; /* Adjusted padding to remove extra space on all sides */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -226,6 +387,8 @@ h3 {
     width: 500px; /* Set width to auto to allow it to adjust based on the content */
     box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
+
+
 
 /* Style for the input elements inside the feedback container */
 #feedback-form input[type="text"] {
@@ -458,23 +621,7 @@ input:focus.light-mode + .slider.light-mode {
     border: 1px solid #d4d4d4; /* Adjust border color for light mode */
 }
 
-#fixed-container {
-    position: fixed;
-    bottom: 1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100%);
-    max-width: 600px;
-    padding: 20px;
-    height: 100px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    background-color: #2d2d2d;
-    z-index: 1;
-    overflow: hidden;
-    margin: 0 auto;
-    box-sizing: border-box; 
-}
+
 
 #translation-options-form {
     display: flex;
@@ -521,3 +668,4 @@ input:focus.light-mode + .slider.light-mode {
 #translation-options-form input[type="checkbox"] + span {
     color: white;
 }
+
