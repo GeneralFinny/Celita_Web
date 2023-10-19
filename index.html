@@ -16,15 +16,17 @@
     
 
 
-   
+    
     <div class="container dark-mode">
         <h3 class="dark-mode">Chat with Translation Bot</h3>
       
         <button id="clear-history" class="clear-button dark-mode"><i class="fas fa-trash-alt"></i> Clear Chat</button>
         <button id="feedback-button" class="dark-mode"><i class="fas fa-comment"></i>  Send Feedback</button>
+        
         <div class="chat-container dark-mode">
             <!-- Chat messages will be displayed here -->
         </div>
+
     
         
     </div>
@@ -40,13 +42,22 @@
             <input type="text" id="suggested-translation" name="suggested_translation" required autocomplete="off" class="dark-mode">
             <button id="send-feedback" class="dark-mode"><i class="fas fa-paper-plane"></i> Send</button>
         </form>
+        
     </div>
+
 
     <div id="fixed-container">
         <form id="translation-form" class="chat-controls">
             <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." autocomplete="off" class="dark-mode">
             <input type="submit" value=">" class="dark-mode">
+
         </form>
+        <form id="translation-options-form">
+            <input type="checkbox" name="translateToTagalog" value="Tagalog" >To Tagalog<br>
+            <input type="checkbox" name="translateToCebuano" value="Cebuano" checked>To Cebuano<br>
+            <input type="checkbox" name="translateToEnglish" value="English">To English<br>
+        </form>
+        
        
     </div>
 
