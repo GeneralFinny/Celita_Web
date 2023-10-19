@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -18,17 +19,12 @@
 
     
     <div class="container dark-mode">
-        <h3 class="dark-mode">Chat with Translation Bot</h3>
-      
         <button id="clear-history" class="clear-button dark-mode"><i class="fas fa-trash-alt"></i> Clear Chat</button>
         <button id="feedback-button" class="dark-mode"><i class="fas fa-comment"></i>  Send Feedback</button>
         
         <div class="chat-container dark-mode">
             <!-- Chat messages will be displayed here -->
-        </div>
-
-    
-        
+        </div>  
     </div>
  
 
@@ -41,22 +37,27 @@
             <label for="suggested-translation" class="dark-mode">Suggested Translation:</label>
             <input type="text" id="suggested-translation" name="suggested_translation" required autocomplete="off" class="dark-mode">
             <button id="send-feedback" class="dark-mode"><i class="fas fa-paper-plane"></i> Send</button>
+        </form>  
+    </div>
+
+    <div id="additional-options-container" class="hidden">
+        <button id="close-options-button" title="Close" class="dark-mode"><i class="fas fa-times"></i></button>
+        <form id="translation-options-form">
+            <input type="checkbox" name="translateToTagalog" value="Tagalog" >To Tagalog<br>
+            <input type="checkbox" name="translateToCebuano" value="Cebuano" checked>To Cebuano<br>
+            <input type="checkbox" name="translateToEnglish" value="English">To English<br>
         </form>
-        
     </div>
 
 
     <div id="fixed-container">
         <form id="translation-form" class="chat-controls">
             <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." autocomplete="off" class="dark-mode">
-            <input type="submit" value=">" class="dark-mode">
-
+            <input type="submit" value="" id="translate-button" class="dark-mode">
+            <button type="button" id="mic-button" class="dark-mode"></button>
+            <button type="button" id="options-button" class="dark-mode"></button>
         </form>
-        <form id="translation-options-form">
-            <input type="checkbox" name="translateToTagalog" value="Tagalog" >To Tagalog<br>
-            <input type="checkbox" name="translateToCebuano" value="Cebuano" checked>To Cebuano<br>
-            <input type="checkbox" name="translateToEnglish" value="English">To English<br>
-        </form>
+   
         
        
     </div>
