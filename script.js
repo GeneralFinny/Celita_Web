@@ -188,90 +188,118 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function displayUserMessage(inputText) {
-        const chatContainer = document.querySelector('.chat-container');
-
         const messageContainer = document.createElement('div');
         messageContainer.className = 'message-container user-message-container';
 
         const userMessage = document.createElement('div');
         userMessage.className = 'user-message';
         userMessage.textContent = inputText;
-        userMessage.title = `Sent at ${getCurrentTime()}`; // Add tooltip displaying the time
+        userMessage.title = `Sent at ${getCurrentTime()}`;
 
         const userIcon = document.createElement('img');
-        userIcon.src = 'user.png'; // Replace with the path to your user icon image
+        userIcon.src = 'user.png';
         userIcon.className = 'user-icon';
 
-        
+        messageContainer.appendChild(userIcon);
         messageContainer.appendChild(userMessage);
         chatContainer.appendChild(messageContainer);
 
-        // Scroll to the bottom of the chat container to show the latest message
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    document.getElementById('translation-form').addEventListener('submit', function (event) {
+    const translationForm = document.getElementById('translation-form');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let translationOptions = [];
+    
+    checkboxes.forEach(checkbox => {
+        if (checkbox.value === 'Cebuano') {
+            checkbox.checked = true;
+            translationOptions.push(checkbox.value);
+        }
+    
+        checkbox.addEventListener('click', function (event) {
+            if (checkbox.checked) {
+                checkboxes.forEach(cb => {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                    }
+                });
+                translationOptions = [checkbox.value];
+            } else {
+                checkbox.checked = true;
+            }
+            translationForm.setAttribute('data-translation-options', translationOptions.join(','));
+        });
+    });
+
+    translationForm.setAttribute('data-translation-options', translationOptions.join(','));
+    translationForm.addEventListener('submit', function (event) {
         event.preventDefault();
         const inputText = document.getElementById('input-text').value;
+        const translationOptions = translationForm.getAttribute('data-translation-options');
+
         if (containsVulgarWord(inputText, vulgarWords)) {
             displayCensoredUserMessage(inputText, vulgarWords);
             clearInput();
         } else {
-            translateText(inputText);
+            translateText(inputText, translationOptions);
         }
     });
 
 
-    function translateText(inputText) {
+    function translateText(inputText, translationOptions) {
         const translateButton = document.querySelector('#translation-form input[type="submit"]');
         translateButton.disabled = true; // Disable the translate button during the translation process
         const chatContainer = document.querySelector('.chat-container');
-    
+
         // Display the user input with the user icon
         displayUserMessage(inputText);
-    
+
         // Create a placeholder message indicating the bot is still processing
         placeholderMessage = displayBotPlaceholderMessage();
-    
+
         // Perform the translation fetch
-        fetch("https://b672-136-158-26-7.ngrok-free.app/translate", {
+        fetch("https://854a-136-158-26-7.ngrok-free.app/translate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Cache-Control": "no-cache" // Add this line to set the Cache-Control header
             },
-            body: JSON.stringify({ "input_text": inputText })
+            body: JSON.stringify({
+                input_text: inputText,
+                translation_options: translationOptions
+            })
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('translation-form').reset();
-    
-            // Check if the "translated_text" property exists in the response data
-            if (data.translated_text) {
-                // Remove the placeholder message and add the actual translated text
-                updateBotMessage(data.translated_text);
-            } else {
-                // If there's no "translated_text," display an error message or handle the situation accordingly
-                console.error("Translation error: Translated text not found in the response.");
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('translation-form').reset();
+
+                // Check if the "translated_text" property exists in the response data
+                if (data.translated_text) {
+                    // Remove the placeholder message and add the actual translated text
+                    updateBotMessage(data.translated_text);
+                } else {
+                    // If there's no "translated_text," display an error message or handle the situation accordingly
+                    console.error("Translation error: Translated text not found in the response.", data.error);
+                    translateButton.disabled = false;
+                }
+
+                // Scroll to the bottom of the chat container to show the latest message
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            })
+            .catch(error => {
+                // Display an error message for network issues, but not for other errors
+                console.error('Translation error:', error);
+                if (error.message === 'Network response was not ok') {
+                    displayTranslationError();
+                }
                 translateButton.disabled = false;
-            }
-    
-            // Scroll to the bottom of the chat container to show the latest message
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        })
-        .catch(error => {
-            // Display an error message for network issues, but not for other errors
-            console.error('Translation error:', error);
-            if (error.message === 'Network response was not ok') {
-                displayTranslationError();
-            }
-            translateButton.disabled = false;
-        });
+            });
     }
     
     function updateBotMessage(translatedText) {
@@ -364,16 +392,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-
-
-
-
-
 });
-
-
-
-
-    
-
-
