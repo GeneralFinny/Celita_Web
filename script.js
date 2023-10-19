@@ -121,6 +121,9 @@ document.getElementById("clear-history").addEventListener("click", function () {
     chatContainer.innerHTML = ""; // Clear chat history
 });
 
+
+
+
 // Show feedback form when clicking the feedback button
 document.getElementById("feedback-button").addEventListener("click", function () {
     document.getElementById("feedback-container").style.display = "block";
@@ -137,6 +140,7 @@ document.getElementById("close-feedback").addEventListener("click", function () 
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    
 
 
 
@@ -209,7 +213,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const translationForm = document.getElementById('translation-form');
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
     let translationOptions = [];
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            console.log(checkbox.value);
+        }
+    });
     
     checkboxes.forEach(checkbox => {
         if (checkbox.value === 'Cebuano') {
@@ -246,6 +256,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    function displayBotMessageWithAnimation(translatedText) {
+        const botIcon = placeholderMessage.querySelector('.bot-icon');
+        const botMessage = placeholderMessage.querySelector('.bot-message');
+        if (botIcon && botMessage) {
+            botMessage.textContent = translatedText;
+            botMessage.classList.add('animate__animated', 'animate__tada');
+            translateButton.disabled = false;
+        }
+    }
 
     function translateText(inputText, translationOptions) {
         const translateButton = document.querySelector('#translation-form input[type="submit"]');
@@ -259,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholderMessage = displayBotPlaceholderMessage();
 
         // Perform the translation fetch
-        fetch("https://854a-136-158-26-7.ngrok-free.app/translate", {
+        fetch("https://2423-136-158-26-7.ngrok-free.app/translate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -282,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Check if the "translated_text" property exists in the response data
                 if (data.translated_text) {
                     // Remove the placeholder message and add the actual translated text
-                    updateBotMessage(data.translated_text);
+                    updateBotMessageWithAnimation(data.translated_text);
                 } else {
                     // If there's no "translated_text," display an error message or handle the situation accordingly
                     console.error("Translation error: Translated text not found in the response.", data.error);
@@ -302,14 +321,24 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
     
-    function updateBotMessage(translatedText) {
+    function updateBotMessageWithAnimation(translatedText) {
         const botIcon = placeholderMessage.querySelector('.bot-icon');
         const botMessage = placeholderMessage.querySelector('.bot-message');
         if (botIcon && botMessage) {
             botMessage.textContent = translatedText;
+            botMessage.classList.add('animate__animated', 'animate__tada');
+            if (translateButton) {
+                translateButton.disabled = false;
+            } else {
+                console.error('Translate button is not defined.');
+                translateButton.disabled = false;
+            }
+        } else {
+            console.error('Bot icon or message not found.');
             translateButton.disabled = false;
         }
     }
+
 
     function displayCensoredUserMessage(inputText, vulgarWords) {
         const chatContainer = document.querySelector('.chat-container');
@@ -385,11 +414,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (isMobileDevice()) {
-        chatContainer.style.height = '60vh';
+        chatContainer.style.height = '65vh';
        
     } else {
-        chatContainer.style.height = '300px';
+        chatContainer.style.height = '500px';
     }
 
+    const optionsButton = document.getElementById('options-button');
+    const additionalOptionsContainer = document.getElementById('additional-options-container');
+    const closeOptionsButton = document.getElementById('close-options-button');
 
+    optionsButton.addEventListener('click', () => {
+        additionalOptionsContainer.style.display = 'block';
+    });
+
+    closeOptionsButton.addEventListener('click', () => {
+        additionalOptionsContainer.style.display = 'none';
+    });
+
+
+    
 });
