@@ -669,3 +669,14 @@ input:focus.light-mode + .slider.light-mode {
     color: white;
 }
 
+.speaker-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-left: 5px;
+    position: relative;
+    bottom: -5px;
+    background-color: transparent;
+    
+    /* Add any other styling properties you want for the speaker icon button */
+  }

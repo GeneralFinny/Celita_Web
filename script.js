@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholderMessage = displayBotPlaceholderMessage();
 
         // Perform the translation fetch
-        fetch("https://2423-136-158-26-7.ngrok-free.app/translate", {
+        fetch("http://127.0.0.1:5000/translate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -319,24 +319,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 translateButton.disabled = false;
             });
-    }
-    
-    function updateBotMessageWithAnimation(translatedText) {
-        const botIcon = placeholderMessage.querySelector('.bot-icon');
-        const botMessage = placeholderMessage.querySelector('.bot-message');
-        if (botIcon && botMessage) {
-            botMessage.textContent = translatedText;
-            botMessage.classList.add('animate__animated', 'animate__tada');
-            if (translateButton) {
-                translateButton.disabled = false;
-            } else {
-                console.error('Translate button is not defined.');
-                translateButton.disabled = false;
-            }
-        } else {
-            console.error('Bot icon or message not found.');
-            translateButton.disabled = false;
-        }
     }
 
 
@@ -431,6 +413,96 @@ document.addEventListener('DOMContentLoaded', function () {
     closeOptionsButton.addEventListener('click', () => {
         additionalOptionsContainer.style.display = 'none';
     });
+
+
+
+    //TTS Test part
+    
+    function playTranslatedText(text) {
+        let lang;
+    
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let selectedLanguage;
+    
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedLanguage = checkbox.value;
+            }
+        });
+    
+        console.log("Selected Language inside playTranslatedText:", selectedLanguage);
+    
+        switch (selectedLanguage) {
+            case 'Tagalog':
+                lang = 'tl';
+                break;
+            case 'Cebuano':
+                lang = 'tl';
+                break;
+            case 'English':
+                lang = 'en';
+                break;
+            default:
+                lang = 'tl'; // Default to Tagalog if no language is selected
+        }
+    
+        fetch(`http://localhost:5000/text_to_speech/${text}/${lang}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const audio = new Audio(url);
+                audio.volume = 1; // Set the volume to 100%
+                audio.play();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+// Update the bot message function to include the speaker icon and play functionality
+function updateBotMessageWithAnimation(translatedText) {
+  const botIcon = placeholderMessage.querySelector('.bot-icon');
+  const botMessage = placeholderMessage.querySelector('.bot-message');
+  if (botIcon && botMessage) {
+    botMessage.textContent = translatedText;
+    botMessage.classList.add('animate__animated', 'animate__tada');
+
+    // Add the speaker icon button
+    const speakerIcon = document.createElement('button');
+    speakerIcon.classList.add('speaker-icon');
+    speakerIcon.addEventListener('click', function () {
+      playTranslatedText(translatedText);
+    });
+
+    const sound = new Audio('ambatukam.mp3'); // Replace 'path_to_your_sound_file.mp3' with the file path of your sound file
+    sound.play(); // Play the sound
+
+        // Add the speaker icon image
+        const speakerIconImage = document.createElement('img');
+        speakerIconImage.src = 'speaker-24.png'; // Replace 'path_to_your_speaker_icon.png' with your speaker icon's file path
+        speakerIconImage.alt = 'Speaker Icon'; // Add an alt attribute for accessibility
+        speakerIcon.appendChild(speakerIconImage); // Append the image to the speaker icon button
+    // Append the speaker icon button to the bot message container
+
+
+    placeholderMessage.appendChild(speakerIcon);
+
+    if (translateButton) {
+      translateButton.disabled = false;
+    } else {
+      console.error('Translate button is not defined.');
+      translateButton.disabled = false;
+    }
+  } else {
+    console.error('Bot icon or message not found.');
+    translateButton.disabled = false;
+  }
+}
 
 
     

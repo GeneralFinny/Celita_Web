@@ -11,6 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/freetonik/gTTS.js/dist/gtts.min.js"></script>
 
 </head>
 <body class="dark-mode">
@@ -19,11 +20,13 @@
 
     
     <div class="container dark-mode">
+ 
         <button id="clear-history" class="clear-button dark-mode"><i class="fas fa-trash-alt"></i> Clear Chat</button>
         <button id="feedback-button" class="dark-mode"><i class="fas fa-comment"></i>  Send Feedback</button>
         
         <div class="chat-container dark-mode">
             <!-- Chat messages will be displayed here -->
+           
         </div>  
     </div>
  
@@ -42,6 +45,7 @@
 
     <div id="additional-options-container" class="hidden">
         <button id="close-options-button" title="Close" class="dark-mode"><i class="fas fa-times"></i></button>
+        <h3>Translate and Play Speech: </h3>
         <form id="translation-options-form">
             <input type="checkbox" name="translateToTagalog" value="Tagalog" >To Tagalog<br>
             <input type="checkbox" name="translateToCebuano" value="Cebuano" checked>To Cebuano<br>
