@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholderMessage = displayBotPlaceholderMessage();
 
         // Perform the translation fetch
-        fetch("http://127.0.0.1:5000/translate", {
+        fetch("https://aa70-136-158-26-7.ngrok-free.app/translate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
