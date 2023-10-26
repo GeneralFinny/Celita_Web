@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 lang = 'tl'; // Default to Tagalog if no language is selected
         }
     
-        fetch(`https://f860-136-158-26-7.ngrok-free.app/text_to_speech/${text}/${lang}`)
+        fetch(`http://localhost:5000/text_to_speech/${text}/${lang}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
