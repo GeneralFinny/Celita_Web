@@ -387,20 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         return placeholderMessage; // Return the placeholder message
     }
-    function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
 
-    function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-
-    if (isMobileDevice()) {
-        chatContainer.style.height = '65vh';
-       
-    } else {
-        chatContainer.style.height = '500px';
-    }
 
     const optionsButton = document.getElementById('options-button');
     const additionalOptionsContainer = document.getElementById('additional-options-container');

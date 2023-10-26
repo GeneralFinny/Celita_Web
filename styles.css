@@ -31,12 +31,12 @@ body {
     margin: 0 auto;
     padding: 20px;
     /* Account for the header height */
-    background-color: #1d1a1a;
+    background-color: #0f0115;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     overflow: hidden;
+    height: 80%;
     
-    margin-top: -150px;
 
     
 }
@@ -77,19 +77,22 @@ h3 {
 
 
 .chat-container {
- 
     display: flex;
     flex-direction: column;
-    height: 70%;
+    
     overflow-y: auto;
     padding: 10px;
     scrollbar-color: #333 #202020;
     scrollbar-width: thin;
+    background-image: url('bg.png');
+    background-size: cover; /* Adjust the size of the background image */
+    background-position: center; /* Adjust the position of the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
     background-color: #141414;
     margin-top: 10px;
     margin-bottom: 10px;
-  }
-  
+    height: 100%;
+}
   .message-container {
     display: flex;
     align-items: center;
