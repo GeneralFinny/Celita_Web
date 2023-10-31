@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholderMessage = displayBotPlaceholderMessage();
 
         // Perform the translation fetch
-        fetch("http://celitasiumoverdrive.pythonanywhere.com/translate", {
+        fetch("https://celitasiumoverdrive.pythonanywhere.com/translate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 lang = 'tl'; // Default to Tagalog if no language is selected
         }
     
-        fetch(`http://celitasiumoverdrive.pythonanywhere.com/text_to_speech/${text}/${lang}`)
+        fetch(`https://celitasiumoverdrive.pythonanywhere.com/text_to_speech/${text}/${lang}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
