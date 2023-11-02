@@ -547,7 +547,14 @@ function toggleMic() {
                 })
                 .catch(error => console.error('Error:', error));
             };
+
+            // Release the media resources
+            if (mediaRecorder && mediaRecorder.stream) {
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+
+            // Reset the recorded chunks
+            recordedChunks = [];
         }
     }
 }
-
