@@ -21,13 +21,23 @@
     
     <div class="container dark-mode">
  
-        <button id="clear-history" class="clear-button dark-mode"><i class="fas fa-trash-alt"></i> Clear Chat</button>
-        <button id="feedback-button" class="dark-mode"><i class="fas fa-comment"></i>  Send Feedback</button>
-        
+        <h3>Celita: AI Translator</h3>
+        <button type="button" id="options-button" class="dark-mode"></button>
         <div class="chat-container dark-mode">
             <!-- Chat messages will be displayed here -->
            
         </div>  
+    </div>
+    <div id="fixed-container">
+        <form id="translation-form" class="chat-controls">
+            <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..."
+                autocomplete="off" class="dark-mode">
+            <input type="submit" value="" id="translate-button" class="dark-mode">
+            <button type="button" id="mic-button" class="dark-mode" onclick="toggleMic()">
+
+            </button>
+
+        </form>
     </div>
  
 
@@ -45,26 +55,25 @@
 
     <div id="additional-options-container" class="hidden">
         <button id="close-options-button" title="Close" class="dark-mode"><i class="fas fa-times"></i></button>
-        <h3>Translate and Play Speech: </h3>
+        <h4>Translate and Play Speech: </h4>
         <form id="translation-options-form">
-            <input type="checkbox" name="translateToTagalog" value="Tagalog" >To Tagalog<br>
-            <input type="checkbox" name="translateToCebuano" value="Cebuano" checked>To Cebuano<br>
-            <input type="checkbox" name="translateToEnglish" value="English">To English<br>
+            <div>
+                <input type="checkbox" id="translateToTagalog" name="translateToTagalog" value="Tagalog">
+                <label for="translateToTagalog">To Tagalog</label>
+            </div>
+            <div>
+                <input type="checkbox" id="translateToCebuano" name="translateToCebuano" value="Cebuano" checked>
+                <label for="translateToCebuano">To Cebuano</label>
+            </div>
+            <div>
+                <input type="checkbox" id="translateToEnglish" name="translateToEnglish" value="English">
+                <label for="translateToEnglish">To English</label>
+            </div>
+            <button id="clear-history" class="clear-button dark-mode"><i class="fas fa-trash-alt"></i> Clear Chat</button>
+            <button id="feedback-button" class="dark-mode"><i class="fas fa-comment"></i> Send Feedback</button>
         </form>
     </div>
 
-
-    <div id="fixed-container">
-        <form id="translation-form" class="chat-controls">
-            <input type="text" id="input-text" name="input_text" required placeholder="Type your phrase..." autocomplete="off" class="dark-mode">
-            <input type="submit" value="" id="translate-button" class="dark-mode">
-            <button type="button" id="mic-button" class="dark-mode"></button>
-            <button type="button" id="options-button" class="dark-mode"></button>
-        </form>
-   
-        
-       
-    </div>
 
 
     <script src="script.js"></script>

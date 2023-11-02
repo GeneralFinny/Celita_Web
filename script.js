@@ -492,5 +492,62 @@ function updateBotMessageWithAnimation(translatedText) {
 }
 
 
+
+
+
+
     
 });
+let mediaRecorder;
+let recordedChunks = [];
+
+function toggleMic() {
+    var micButton = document.getElementById('mic-button');
+    var isMicOn = micButton.classList.contains('active');
+
+    if (!isMicOn) {
+        // Change the mic icon to indicate that it's on
+        micButton.classList.add('active');
+        console.log('Mic is now on');
+
+        // Implement the action you want when the mic is on
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (stream) {
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = function (event) {
+                    recordedChunks.push(event.data);
+                };
+                mediaRecorder.start();
+            });
+    } else {
+        // Change the mic icon to indicate that it's off
+        micButton.classList.remove('active');
+        console.log('Mic is now off');
+
+        // Implement the action you want when the mic is off
+        if (mediaRecorder) {
+            mediaRecorder.stop();
+            mediaRecorder.onstop = function () {
+                const blob = new Blob(recordedChunks, { type: 'audio/wav' });
+
+                // Send the blob to the Flask server
+                const formData = new FormData();
+                formData.append('file', blob, 'recorded.wav');
+                fetch('http://celitasiumoverdrive.pythonanywhere.com/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.transcription) {
+                        document.getElementById('input-text').value = data.transcription;  // Display the transcription in the input field
+                    } else {
+                        console.error(data.error);  // Handle the error appropriately
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            };
+        }
+    }
+}
+
