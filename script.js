@@ -533,7 +533,7 @@ function toggleMic() {
                 // Send the blob to the Flask server
                 const formData = new FormData();
                 formData.append('file', blob, 'recorded.wav');
-                fetch('http://celitasiumoverdrive.pythonanywhere.com/upload', {
+                fetch('https://celitasiumoverdrive.pythonanywhere.com/upload', {
                     method: 'POST',
                     body: formData
                 })
