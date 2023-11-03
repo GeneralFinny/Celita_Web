@@ -364,7 +364,9 @@ body, html {
     cursor: pointer;
     font-size: 16px;
     font-family: 'Inter', sans-serif;
-    margin: 10px; /* Add margin around the buttons */
+    margin: 10px;
+    position: relative; /* Add margin around the buttons */
+    left: -130px;
 }
 
 
@@ -375,7 +377,7 @@ body, html {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #202020;
+    background-color: #270042;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -395,11 +397,11 @@ body, html {
     width: calc(100% - 20px); /* Adjusted width to accommodate padding */
     max-width: calc(100% - 20px); /* Adjusted max-width to accommodate padding */
     padding: 10px;
-    border: 1px solid #1d1a1a;
+    border: 1px solid #ffffff;
     border-radius: 5px;
     margin-bottom: 10px;
-    background-color: #161515; /* Replace with your desired color code for the text box */
-    color: #fff;
+    background-color: #ffffff; /* Replace with your desired color code for the text box */
+    color: #000000;
     font-size: 18px;
     box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
@@ -627,7 +629,7 @@ input:focus.light-mode + .slider.light-mode {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #0f0423;
+    background-color: #13063e;
     padding: 20px; /* Adjusted padding to remove extra space on all sides */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
