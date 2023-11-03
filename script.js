@@ -1,588 +1,718 @@
-// Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyCxZHo4Hm-HmiXEHcTpdYs8STFZjCbEMe0",
-    authDomain: "feedback-5c4e6.firebaseapp.com",
-    databaseURL: "https://feedback-5c4e6-default-rtdb.firebaseio.com",
-    projectId: "feedback-5c4e6",
-    storageBucket: "feedback-5c4e6.appspot.com",
-    messagingSenderId: "1000868145057",
-    appId: "1:1000868145057:web:61771dad64efdd6822cde0"
-};
+/* Reset default browser styles */
 
-
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-var database = firebase.database();
-var databaseRef = database.ref("feedback_data"); // Update with your desired database reference
-
-// Function to send feedback data to Firebase
-function sendFeedbackToFirebase(translatedWord, suggestedTranslation) {
-    var feedbackData = {
-        "Translated word": translatedWord,
-        "Suggested translation": suggestedTranslation
-    };
-
-    // Push the data to the database
-    databaseRef.push(feedbackData);
+h1,
+p,
+ul,
+li,
+button,
+input {
+    margin: 0;
+    padding: 0;
+    border: none;
+    list-style: none;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+}
+h3 {
+    color: #ffffff; /* Set the text color */
+    text-align: center; /* Center the text */
+    font-size: 20px; /* Set the font size */
+    margin-top: 30px; /* Add margin to the top */
+    position: relative;
+    top: 10px;
+    margin-left: 30px;
+    margin-right: 80px;
+    display: inline-block; /* Set display property to inline-block */
 }
 
-// Handle the translation form submission
-document.getElementById("translation-form").addEventListener("submit", function (event) {
-    event.preventDefault();
-    // Your translation form submission logic here
-});
-
-// Other necessary functions and event listeners here
-
-let lastFeedbackTime = 0; // Initialize the last feedback time variable
-
-// Function to check if the input text contains unwanted characters
-function hasUnwantedCharacters(inputText) {
-    const regex = /[^a-zA-Z\s.,!?]/g; // Regular expression to check for unwanted characters
-    return regex.test(inputText); // Returns true if unwanted characters are found, false otherwise
+#options-button {
+    margin-top: 20px;
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    border: none;
+    padding: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    background-image: url('addop2.png');
+    background-size: 80%; /* Adjust the background size as needed */
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute; /* Set the position to absolute */
+    top: 10px;
+    right: 0; /* Position the button at the rightmost corner */
+    margin-right: 30px;
 }
 
-// Function to handle the feedback form submission
-document.getElementById("feedback-form").addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+/* Set a modern font */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #232323; /* Grey background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-    const translatedWord = document.getElementById("translated-word").value;
-    const suggestedTranslation = document.getElementById("suggested-translation").value;
 
-    // Check if the cooldown period has elapsed
-    const currentTime = new Date().getTime();
-    if (currentTime - lastFeedbackTime < 30000) { // 30,000 milliseconds = 30 seconds
-        // If the cooldown period has not elapsed, display a warning message
-        const feedbackContainer = document.getElementById("feedback-container");
-        const warningMessage = document.createElement("p");
-        warningMessage.textContent = "Please wait for 30 seconds before submitting another feedback.";
-        warningMessage.style.color = "#f53e3e"; // Red color for the warning message
-        feedbackContainer.appendChild(warningMessage);
 
-        // Remove the warning message after a few seconds
-        setTimeout(function () {
-            feedbackContainer.removeChild(warningMessage);
-        }, 3000); // Remove the warning message after 3 seconds (adjust as needed)
 
-        return; // Stop the function execution
+/* Style headings */
+h1,
+h2,
+h3 {
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.experimental-text {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Chat container scrollbar styles */
+.chat-container::-webkit-scrollbar {
+    width: 10px; /* Set the width of the scrollbar */
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: #333; /* Thumb color */
+    border-radius: 5px; /* Rounded corners for the thumb */
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background-color: #202020; /* Track color */
+}
+
+/* Dark mode scrollbar for Firefox */
+.chat-container {
+    scrollbar-color: #333 #202020; /* Thumb color and track color */
+}
+body, html {
+    overflow: hidden;
+    height: 100%;
+}
+
+.container {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #130931;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#fixed-container {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100%); /* Adjust the width to create some space on the sides */
+    max-width: 600px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-top: 0px;
+    height: 65px; /* Adjust the height as needed */
+    box-shadow: 0 4px 6px rgba(21, 4, 46, 0.1);
+    background-color: #07031d;
+    z-index: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.chat-container {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* Set the message order to normal */
+    align-items: flex-start; /* Adjust the alignment for the messages */
+    justify-content: flex-start; /* Adjust the alignment for the messages */
+    padding: 10px;
+    scrollbar-color: #333 #202020;
+    scrollbar-width: thin;
+    background-image: url('bg.png');
+    background-size: cover; /* Adjust the size of the background image */
+    background-position: center; /* Adjust the position of the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    background-color: #141414;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 70px; /* Adjust the value to leave space for the fixed container */
+    overflow-y: auto; /* Add vertical scrolling */
+}
+
+.user-message-container {
+    align-self: flex-end; /* Adjust the alignment for the user messages to the right */
+}
+
+.bot-message-container {
+    align-self: flex-start; /* Adjust the alignment for the bot messages to the left */
+}
+
+
+/* Media query for mobile devices */
+@media only screen and (max-width: 600px) {
+    body, html {
+        position: fixed;
     }
 
-    // Check for unwanted characters in the input text
-    if (hasUnwantedCharacters(translatedWord) || hasUnwantedCharacters(suggestedTranslation)) {
-        // Display an error message for invalid characters
-        const feedbackContainer = document.getElementById("feedback-container");
-        const errorMessage = document.createElement("p");
-        errorMessage.textContent = "Invalid characters detected. Please remove special characters and numbers.";
-        errorMessage.style.color = "#f53e3e"; // Red color for the error message
-        feedbackContainer.appendChild(errorMessage);
-
-        // Remove the error message after a few seconds
-        setTimeout(function () {
-            feedbackContainer.removeChild(errorMessage);
-        }, 3000); // Remove the error message after 3 seconds (adjust as needed)
-
-        return; // Stop the function execution
+    .container {
+        height: 100%;
     }
 
-    // If the cooldown period has elapsed and no unwanted characters are found, proceed with the feedback submission
-    lastFeedbackTime = currentTime; // Update the last feedback time
-
-    // Send the feedback to Firebase
-    sendFeedbackToFirebase(translatedWord, suggestedTranslation);
-
-    // Clear feedback form input fields
-    document.getElementById("translated-word").value = "";
-    document.getElementById("suggested-translation").value = "";
-
-    // Display a "Feedback Sent" message
-    const feedbackContainer = document.getElementById("feedback-container");
-    const feedbackSentMessage = document.createElement("p");
-    feedbackSentMessage.textContent = "Feedback Sent!";
-    feedbackSentMessage.style.color = "#0f976c"; // Green color
-
-    // Remove the previous warning message if it exists
-    const previousWarningMessage = document.querySelector("#feedback-container p");
-    if (previousWarningMessage) {
-        previousWarningMessage.remove();
+    .chat-container {
+        height: calc(100% - 80px); /* Adjust the value to leave space for the fixed container */
     }
-
-    feedbackContainer.appendChild(feedbackSentMessage);
-
-    // Automatically remove the "Feedback Sent" message after a few seconds
-    setTimeout(function () {
-        feedbackContainer.removeChild(feedbackSentMessage);
-    }, 3000); // Remove the message after 3 seconds (adjust as needed)
-});
-
-// Clear history button functionality
-document.getElementById("clear-history").addEventListener("click", function () {
-    const chatContainer = document.querySelector(".chat-container");
-    chatContainer.innerHTML = ""; // Clear chat history
-});
+}
 
 
 
-
-// Show feedback form when clicking the feedback button
-document.getElementById("feedback-button").addEventListener("click", function () {
-    document.getElementById("feedback-container").style.display = "block";
-});
-
-document.getElementById("close-feedback").addEventListener("click", function () {
-    document.getElementById("feedback-container").style.display = "none";
-});
-
-
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    
-
-
-
-    const chatContainer = document.querySelector('.chat-container');
-
-    // Function to display the initial bot greeting message
-    function displayInitialGreeting() {
-        const initialGreeting = "Hello, let's start translating!";
-        const messageContainer = document.createElement('div');
-        messageContainer.className = 'message-container bot-message-container';
-
-        const botIcon = document.createElement('img');
-        botIcon.src = 'bot.png'; // Replace with the path to your bot icon image
-        botIcon.className = 'bot-icon';
-
-        const botMessage = document.createElement('div');
-        botMessage.className = 'bot-message';
-        botMessage.textContent = initialGreeting;
-        botMessage.title = `Sent at ${getCurrentTime()}`; // Add tooltip displaying the time
-
-        messageContainer.appendChild(botIcon);
-        messageContainer.appendChild(botMessage);
-        chatContainer.appendChild(messageContainer);
-
-        // Scroll to the bottom of the chat container to show the latest message
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    displayInitialGreeting();
-    let translationAllowed = true; // Flag to track whether the translation is allowed
-    let vulgarWords = []; // Initialize an empty array to store the vulgar words
-    let placeholderMessage;
-    let translateButton;
-
-    fetch('vulgar_words.txt')
-        .then(response => response.text())
-        .then(data => {
-            vulgarWords = data.split('\n').map(word => word.trim());
-        })
-        .catch(error => {
-            console.error('Error fetching vulgar words:', error);
-        });
-
-    function getCurrentTime() {
-        const now = new Date();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        return `${hours}:${minutes}`;
-    }
-
-    function displayUserMessage(inputText) {
-        const messageContainer = document.createElement('div');
-        messageContainer.className = 'message-container user-message-container';
-
-        const userMessage = document.createElement('div');
-        userMessage.className = 'user-message';
-        userMessage.textContent = inputText;
-        userMessage.title = `Sent at ${getCurrentTime()}`;
-
-        const userIcon = document.createElement('img');
-        userIcon.src = 'user.png';
-        userIcon.className = 'user-icon';
-
-        messageContainer.appendChild(userIcon);
-        messageContainer.appendChild(userMessage);
-        chatContainer.appendChild(messageContainer);
-
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    const translationForm = document.getElementById('translation-form');
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    
-    let translationOptions = [];
-    checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            console.log(checkbox.value);
-        }
-    });
-    
-    checkboxes.forEach(checkbox => {
-        if (checkbox.value === 'Cebuano') {
-            checkbox.checked = true;
-            translationOptions.push(checkbox.value);
-        }
-    
-        checkbox.addEventListener('click', function (event) {
-            if (checkbox.checked) {
-                checkboxes.forEach(cb => {
-                    if (cb !== checkbox) {
-                        cb.checked = false;
-                    }
-                });
-                translationOptions = [checkbox.value];
-            } else {
-                checkbox.checked = true;
-            }
-            translationForm.setAttribute('data-translation-options', translationOptions.join(','));
-        });
-    });
-
-    translationForm.setAttribute('data-translation-options', translationOptions.join(','));
-    translationForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const inputText = document.getElementById('input-text').value;
-        const translationOptions = translationForm.getAttribute('data-translation-options');
-
-        if (containsVulgarWord(inputText, vulgarWords)) {
-            displayCensoredUserMessage(inputText, vulgarWords);
-            clearInput();
-        } else {
-            translateText(inputText, translationOptions);
-        }
-    });
-
-    function displayBotMessageWithAnimation(translatedText) {
-        const botIcon = placeholderMessage.querySelector('.bot-icon');
-        const botMessage = placeholderMessage.querySelector('.bot-message');
-        if (botIcon && botMessage) {
-            botMessage.textContent = translatedText;
-            botMessage.classList.add('animate__animated', 'animate__tada');
-            translateButton.disabled = false;
-        }
-    }
-
-    function translateText(inputText, translationOptions) {
-        const translateButton = document.querySelector('#translation-form input[type="submit"]');
-        translateButton.disabled = true; // Disable the translate button during the translation process
-        const chatContainer = document.querySelector('.chat-container');
-
-        // Display the user input with the user icon
-        displayUserMessage(inputText);
-
-        // Create a placeholder message indicating the bot is still processing
-        placeholderMessage = displayBotPlaceholderMessage();
-
-        // Perform the translation fetch
-        fetch("https://celitasiumoverdrive.pythonanywhere.com/translate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Cache-Control": "no-cache" // Add this line to set the Cache-Control header
-            },
-            body: JSON.stringify({
-                input_text: inputText,
-                translation_options: translationOptions
-            })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('translation-form').reset();
-
-                // Check if the "translated_text" property exists in the response data
-                if (data.translated_text) {
-                    // Remove the placeholder message and add the actual translated text
-                    updateBotMessageWithAnimation(data.translated_text);
-                } else {
-                    // If there's no "translated_text," display an error message or handle the situation accordingly
-                    console.error("Translation error: Translated text not found in the response.", data.error);
-                    translateButton.disabled = false;
-                }
-
-                // Scroll to the bottom of the chat container to show the latest message
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            })
-            .catch(error => {
-                // Display an error message for network issues, but not for other errors
-                console.error('Translation error:', error);
-                if (error.message === 'Network response was not ok') {
-                    displayTranslationError();
-                }
-                translateButton.disabled = false;
-            });
-    }
-
-
-    function displayCensoredUserMessage(inputText, vulgarWords) {
-        const chatContainer = document.querySelector('.chat-container');
-        
-        const messageContainer = document.createElement('div');
-        messageContainer.className = 'message-container user-message-container';
-        
-        const userIcon = document.createElement('img');
-        userIcon.src = 'user.png'; // Replace with the path to your user icon image
-        userIcon.className = 'user-icon';
-        
-        const userMessage = document.createElement('div');
-        userMessage.className = 'user-message';
-        userMessage.textContent = ` ${censorText(inputText, vulgarWords)}`;
-        userMessage.title = `Sent at ${getCurrentTime()}`; // Add tooltip displaying the time
-        
-        
-        messageContainer.appendChild(userMessage);
-        chatContainer.appendChild(messageContainer);
-        
-        const errorMessage = document.createElement('div');
-        errorMessage.className = 'banned-message';
-        errorMessage.textContent = 'Banned words detected.';
-        
-        chatContainer.appendChild(errorMessage);
-        
-        // Scroll to the bottom of the chat container to show the latest message
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    function clearInput() {
-        document.getElementById('input-text').value = '';
-    }
-
-    function containsVulgarWord(text, vulgarWords) {
-        for (let i = 0; i < vulgarWords.length; i++) {
-            if (text.toLowerCase().includes(vulgarWords[i].toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function censorText(text, vulgarWords) {
-        let censoredText = text;
-        for (let i = 0; i < vulgarWords.length; i++) {
-            const regex = new RegExp(`\\b${vulgarWords[i]}\\b`, 'gi');
-            censoredText = censoredText.replace(regex, "[CENSORED]");
-        }
-        return censoredText;
-    }
-
-    function displayBotPlaceholderMessage() {
-        const chatContainer = document.querySelector('.chat-container');
-    
-        // Create a placeholder message indicating the bot is still processing
-        const placeholderMessage = document.createElement('div');
-        placeholderMessage.className = 'message-container bot-message-container';
-        placeholderMessage.innerHTML = '<img src="bot.png" class="bot-icon" alt="Bot Icon"><div class="bot-message"><img src="l2.gif" alt="Loading..." width="15" height="15"></div>';
-        chatContainer.appendChild(placeholderMessage);
-    
-        // Scroll to the bottom of the chat container to show the latest message
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    
-        return placeholderMessage; // Return the placeholder message
-    }
-
-
-    const optionsButton = document.getElementById('options-button');
-    const additionalOptionsContainer = document.getElementById('additional-options-container');
-    const closeOptionsButton = document.getElementById('close-options-button');
-
-    optionsButton.addEventListener('click', () => {
-        additionalOptionsContainer.style.display = 'block';
-    });
-
-    closeOptionsButton.addEventListener('click', () => {
-        additionalOptionsContainer.style.display = 'none';
-    });
-
-
-
-    //TTS Test part
-    
-    function playTranslatedText(text) {
-        let lang;
-    
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        let selectedLanguage;
-    
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                selectedLanguage = checkbox.value;
-            }
-        });
-    
-        console.log("Selected Language inside playTranslatedText:", selectedLanguage);
-    
-        switch (selectedLanguage) {
-            case 'Tagalog':
-                lang = 'tl';
-                break;
-            case 'Cebuano':
-                lang = 'tl';
-                break;
-            case 'English':
-                lang = 'en';
-                break;
-            default:
-                lang = 'tl'; // Default to Tagalog if no language is selected
-        }
-    
-        fetch(`https://celitasiumoverdrive.pythonanywhere.com/text_to_speech/${text}/${lang}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const audio = new Audio(url);
-                audio.volume = 1; // Set the volume to 100%
-                audio.play();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-
-// Update the bot message function to include the speaker icon and play functionality
-function updateBotMessageWithAnimation(translatedText) {
-  const botIcon = placeholderMessage.querySelector('.bot-icon');
-  const botMessage = placeholderMessage.querySelector('.bot-message');
-  if (botIcon && botMessage) {
-    botMessage.textContent = translatedText;
-    botMessage.classList.add('animate__animated', 'animate__tada');
-
-    // Add the speaker icon button
-    const speakerIcon = document.createElement('button');
-    speakerIcon.classList.add('speaker-icon');
-    speakerIcon.addEventListener('click', function () {
-      playTranslatedText(translatedText);
-    });
-
-    const sound = new Audio('ambatukam.mp3'); // Replace 'path_to_your_sound_file.mp3' with the file path of your sound file
-    sound.play(); // Play the sound
-
-        // Add the speaker icon image
-        const speakerIconImage = document.createElement('img');
-        speakerIconImage.src = 'speaker-24.png'; // Replace 'path_to_your_speaker_icon.png' with your speaker icon's file path
-        speakerIconImage.alt = 'Speaker Icon'; // Add an alt attribute for accessibility
-        speakerIcon.appendChild(speakerIconImage); // Append the image to the speaker icon button
-    // Append the speaker icon button to the bot message container
-
-
-    placeholderMessage.appendChild(speakerIcon);
-
-    if (translateButton) {
-      translateButton.disabled = false;
-    } else {
-      console.error('Translate button is not defined.');
-      translateButton.disabled = false;
-    }
-  } else {
-    console.error('Bot icon or message not found.');
-    translateButton.disabled = false;
+  .message-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
   }
-}
+  
 
-
-
-
-
-
-    
-});
-let audioContext;
-let mediaStreamSource;
-let recorder;
-let mediaStream;
-
-function toggleMic() {
-  var micButton = document.getElementById('mic-button');
-  var isMicOn = micButton.classList.contains('active');
-
-  if (!isMicOn) {
-    // Change the mic icon to indicate that it's on
-    micButton.classList.add('active');
-    console.log('Mic is now on');
-
-    // Clear the translation form
-    document.getElementById('input-text').value = '';
-
-    // Implement the action you want when the mic is on
-    const constraints = {
-        audio: {
-          sampleRate: 44100,  // Adjust the sample rate as needed
-          channelCount: 2,  // Set the number of audio channels
-          echoCancellation: true,  // Enable echo cancellation if necessary
-          noiseSuppression: true  // Enable noise suppression if required
-        }
-      };
-
-    navigator.mediaDevices.getUserMedia(constraints)
-      .then(function (stream) {
-        audioContext = new AudioContext();
-        mediaStream = stream;
-        mediaStreamSource = audioContext.createMediaStreamSource(stream);
-        recorder = new Recorder(mediaStreamSource);
-        recorder.record();
-      })
-      .catch(function (err) {
-        console.error('Error: ' + err);
-      });
-  } else {
-    // Change the mic icon to indicate that it's off
-    micButton.classList.remove('active');
-    console.log('Mic is now off');
-
-    // Clear the translation form
-    document.getElementById('input-text').value = '';
-
-    // Implement the action you want when the mic is off
-    if (recorder) {
-      recorder.stop();
-      recorder.exportWAV(function (blob) {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        document.body.appendChild(a);
-        a.style = 'display: none';
-        a.href = url;
-        a.download = 'recorded.wav';
-        a.click();
-        window.URL.revokeObjectURL(url);
-
-        // Send the blob to the Flask server for further processing
-        const formData = new FormData();
-        formData.append('file', blob, 'recorded.wav');
-        fetch('http://127.0.0.1:5000/upload', {
-          method: 'POST',
-          body: formData
-        })
-          .then(response => response.json())
-          .then(data => {
-            if (data.transcription) {
-              document.getElementById('input-text').value = data.transcription;  // Display the transcription in the input field
-            } else {
-              console.error(data.error);  // Handle the error appropriately
-            }
-          })
-          .catch(error => console.error('Error:', error));
-        
-        // Release the media resources
-        if (mediaStream) {
-          mediaStream.getTracks().forEach(track => track.stop());
-        }
-        if (audioContext) {
-          audioContext.close();
-        }
-      });
-    }
+  
+  .user-message {
+    color: #fff;
+    font-size: 20px;
+    background-color: #590fe4 !important;
+    max-width: 70%;
+    margin: 10px 5px;
+    margin-right: 15px;
+    padding: 15px;
+    border-radius: 50px;
+    position: relative;
+    margin-bottom: 1px;
+    word-wrap: break-word;
   }
+  
+  .bot-message {
+    background-color: #de6f00 !important;
+    color: #ffffff;
+    font-size: 20px;
+    margin: 10px 5px;
+    padding: 15px;
+    border-radius: 50px;
+    margin-bottom: 1px;
+    word-wrap: break-word; /* Add this property to break long words */
+}
+  
+  .user-icon,
+  .bot-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+.banned-message {
+    color: red;
+    display: flex;
+    justify-content: flex-end;
+    
+   
+  }
+.translating-text {
+    align-self: left;
+    padding: 10px;
 }
 
+
+
+
+
+#translation-form input[type="text"] {
+    width: calc(100% - 85px); /* Adjusted width to accommodate the button width */
+    padding: 15px;
+    height: 40px;
+    border: 1px solid #1d1a1a;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    background-color: #ffffff; /* Replace with your desired color code for the text box */
+    color: #000000;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    display: inline-block; /* Set the display property to inline-block */
+}
+
+#translation-form input[type="text"]:focus {
+    outline: none;
+}
+
+#translate-button {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+    padding: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    background-image: url('send.png');
+    background-size: 60%; /* Adjust the background size as needed */
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: -12px;
+   ;
+    
+}
+
+#translate-button:hover {
+    background-color: #4CAF50; /* Change this to your desired hover color */
+}
+
+#input-text:focus + #translate-button {
+    background-color: #4CAF50; /* Change this to your desired focus color */
+    width: 20px;
+    height: 20px;
+}
+
+
+
+#translate-button i, #mic-button i {
+    color: #ffffff;
+    outline: none;
+}
+
+#translate-button:hover, #mic-button:hover {
+    background-color: transparent;
+    color: #848484;
+}
+
+#translate-button:hover i, #mic-button:hover i {
+    color: #848484;
+}
+
+#translation-options-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#image-button {
+    width: 20px;
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 25px;
+
+    outline: none;
+}
+
+#image-button i {
+    color: #ffffff;
+}
+
+#image-button:hover {
+    background-color: transparent;
+    color: #848484;
+}
+
+#image-button:hover i {
+    color: #848484;
+}
+
+
+/* Additional options container */
+
+
+#close-options-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+
+.translating-text {
+    color: #fff;
+}
+
+.clear-button,
+#feedback-button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    margin: 10px;
+    position: relative; /* Add margin around the buttons */
+    left: -130px;
+}
+
+
+
+#feedback-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #270042;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 100;
+    color: #fff;
+    max-width: 90%;
+    width: 500px;
+    box-sizing: border-box;
+    opacity: 1;
+}
+
+
+
+
+/* Style for the input elements inside the feedback container */
+#feedback-form input[type="text"] {
+    width: calc(100% - 20px); /* Adjusted width to accommodate padding */
+    max-width: calc(100% - 20px); /* Adjusted max-width to accommodate padding */
+    padding: 10px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #ffffff; /* Replace with your desired color code for the text box */
+    color: #000000;
+    font-size: 18px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+/* Styles for the close button */
+#close-feedback {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Margin for form elements */
+#feedback-form label,
+#feedback-form input,
+#feedback-form button {
+    margin: 10px 0;
+}
+
+/* Style for the "Send" button */
+#send-feedback {
+    background-color: #1a9e5e;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Add hover effect to the "Clear History" button */
+.clear-button:hover {
+    color: #848484; /* Text color on hover */
+}
+
+/* Add hover effect to the "Send Feedback" button */
+#feedback-button:hover {
+    color: #848484; /* Change text color on hover */
+}
+/* Add hover effect to the "Send" button in the feedback form */
+#send-feedback:hover {
+    background-color: #214d37; /* Background color on hover */
+    color: #ffffff; /* Text color on hover */
+}
+
+/* Add hover effect to the close button in the feedback form */
+#close-feedback:hover {
+    color: #676767; /* Text color on hover */
+}
+
+.switch {
+    position: absolute;
+    top: 10px;
+    right: -10px;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    width: 40px; /* Adjusted width */
+    height: 20px; /* Adjusted height */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px; /* Adjusted height */
+    width: 16px; /* Adjusted width */
+    left: 4px;
+    bottom: 2px; /* Adjusted position */
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px); /* Adjusted translation value */
+    -ms-transform: translateX(20px); /* Adjusted translation value */
+    transform: translateX(20px); /* Adjusted translation value */
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Light mode specific styles */
+body.light-mode {
+    background-color: #f4f4f4;
+    color: #000; /* Set text color to black in light mode */
+}
+
+.container.light-mode {
+    background-color: #ffffff;
+}
+
+header.light-mode {
+    background-color: #7e79ff;
+    color: #212529;
+}
+
+h1.light-mode,
+h2.light-mode,
+h3.light-mode {
+    color: #212529;
+}
+
+.experimental-text.light-mode {
+    color: #111111;
+}
+
+.chat-container.light-mode {
+    background-color: #ffffff;
+}
+
+.switch.light-mode {
+    top: 20px;
+    right: 20px;
+}
+
+.slider.light-mode {
+    background-color: #ccc;
+}
+
+.slider.light-mode:before {
+    background-color: #212529;
+}
+
+input:checked.light-mode + .slider.light-mode {
+    background-color: #2196F3;
+}
+
+input:focus.light-mode + .slider.light-mode {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+.banned-message.light-mode {
+    color: red;
+}
+
+/* Ensure all text in light mode is black */
+body.light-mode,
+h1.light-mode,
+h2.light-mode,
+h3.light-mode,
+
+.chat-container.light-mode,
+.banned-message.light-mode 
+.input-text.light-mode{
+    background-color: white;
+    color: #000;
+}
+
+/* Styles for the dark mode switch in light mode */
+.switch.light-mode {
+    top: 20px;
+    right: 20px;
+}
+
+.slider.light-mode {
+    background-color: #ccc;
+}
+
+.slider.light-mode:before {
+    background-color: #212529;
+}
+
+input:checked.light-mode + .slider.light-mode {
+    background-color: #2196F3;
+}
+
+input:focus.light-mode + .slider.light-mode {
+    box-shadow: 0 0 1px #2196F3;
+}
+#hide-header-button {
+    position: fixed;
+    top: 5px;
+    left: 10px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1; /* Ensure the button stays on top of other elements */
+}
+.light-mode input[type="text"] {
+    border: 1px solid #d4d4d4; /* Adjust border color for light mode */
+}
+
+#additional-options-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #13063e;
+    padding: 20px; /* Adjusted padding to remove extra space on all sides */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 2;
+    color: #fff; /* White text color */
+    max-width: 80%; /* Adjusted maximum width to make it responsive */
+    width: 500px; /* Set width to auto to allow it to adjust based on the content */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    display: flex;
+    flex-direction: column; /* Set the content to display vertically */
+    align-items: flex-start; /* Align the content to the start horizontally */
+}
+
+#additional-options-container button {
+    margin-top: 10px; /* Add some space between each button */
+}
+#translation-options-form div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#translation-options-form input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+#translation-options-form input[type="checkbox"]:checked {
+    background-color: transparent;
+}
+
+#translation-options-form input[type="checkbox"]:checked::before {
+    content: '\2713';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    color: rgb(11, 149, 9);
+    font-size: 20px; /* Adjust the font size of the checkmark */
+    font-weight: bold; 
+}
+
+#translation-options-form input[type="checkbox"] + label {
+    color: white;
+}
+
+
+
+.speaker-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-left: 5px;
+    position: relative;
+    bottom: -5px;
+    background-color: transparent;
+    
+    /* Add any other styling properties you want for the speaker icon button */
+  }
+
+  #mic-button {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    outline: none;
+    background-image: url('mic.png');
+    background-size: 80%; /* Adjust the background size as needed */
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    top: 15px; /* Adjust this value to move the button upwards */
+}
+
+#mic-button.active {
+    background-image: url('mic-slash.png'); /* Change to the icon for when the mic is active */
+}
