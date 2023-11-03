@@ -496,10 +496,7 @@ function updateBotMessageWithAnimation(translatedText) {
 
     
 });
-let audioContext;
-let mediaStreamSource;
-let recorder;
-let mediaStream;
+let recognition;
 
 function toggleMic() {
   var micButton = document.getElementById('mic-button');
@@ -514,73 +511,48 @@ function toggleMic() {
     document.getElementById('input-text').value = '';
 
     // Implement the action you want when the mic is on
-    const constraints = {
-        audio: {
-          sampleRate: 44100,  // Adjust the sample rate as needed
-          channelCount: 2,  // Set the number of audio channels
-          echoCancellation: true,  // Enable echo cancellation if necessary
-          noiseSuppression: true  // Enable noise suppression if required
-        }
-      };
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
 
-    navigator.mediaDevices.getUserMedia(constraints)
-      .then(function (stream) {
-        audioContext = new AudioContext();
-        mediaStream = stream;
-        mediaStreamSource = audioContext.createMediaStreamSource(stream);
-        recorder = new Recorder(mediaStreamSource);
-        recorder.record();
-      })
-      .catch(function (err) {
-        console.error('Error: ' + err);
-      });
+    // Get the selected language from the checkboxes
+    const translateToTagalog = document.getElementById('translateToTagalog').checked;
+    const translateToCebuano = document.getElementById('translateToCebuano').checked;
+    const translateToEnglish = document.getElementById('translateToEnglish').checked;
+
+    // Set the language based on the selected checkbox
+    if (translateToTagalog) {
+      recognition.lang = 'fil-PH'; // Set the language to Tagalog
+      console.log('Recognizing in Tagalog');
+    } else if (translateToCebuano) {
+      recognition.lang = 'fil-PH'; // Set the language to Cebuano
+      console.log('Recognizing in Cebuano');
+    } else if (translateToEnglish) {
+      recognition.lang = 'en-US'; // Set the language to English
+      console.log('Recognizing in English');
+    } else {
+      recognition.lang = 'en-US'; // Default to English if no option is selected
+      console.log('Recognizing in the default language (English)');
+    }
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[event.results.length - 1][0].transcript;
+      // Display the transcript in the input field inside translation-form
+      document.getElementById('input-text').value = transcript;
+    };
+
+    recognition.start();
   } else {
     // Change the mic icon to indicate that it's off
     micButton.classList.remove('active');
     console.log('Mic is now off');
 
     // Clear the translation form
-    document.getElementById('input-text').value = '';
+   
 
     // Implement the action you want when the mic is off
-    if (recorder) {
-      recorder.stop();
-      recorder.exportWAV(function (blob) {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        document.body.appendChild(a);
-        a.style = 'display: none';
-        a.href = url;
-        a.download = 'recorded.wav';
-        a.click();
-        window.URL.revokeObjectURL(url);
-
-        // Send the blob to the Flask server for further processing
-        const formData = new FormData();
-        formData.append('file', blob, 'recorded.wav');
-        fetch('http://127.0.0.1:5000/upload', {
-          method: 'POST',
-          body: formData
-        })
-          .then(response => response.json())
-          .then(data => {
-            if (data.transcription) {
-              document.getElementById('input-text').value = data.transcription;  // Display the transcription in the input field
-            } else {
-              console.error(data.error);  // Handle the error appropriately
-            }
-          })
-          .catch(error => console.error('Error:', error));
-        
-        // Release the media resources
-        if (mediaStream) {
-          mediaStream.getTracks().forEach(track => track.stop());
-        }
-        if (audioContext) {
-          audioContext.close();
-        }
-      });
+    if (recognition) {
+      recognition.stop();
     }
   }
 }
-
