@@ -20,7 +20,7 @@ h3 {
     margin-top: 30px; /* Add margin to the top */
     position: relative;
     top: 10px;
-    margin-left: 30px;
+    margin-left: 40px;
     margin-right: 80px;
     display: inline-block; /* Set display property to inline-block */
 }
@@ -212,8 +212,8 @@ body, html {
   
   .user-icon,
   .bot-icon {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     margin-left: 10px;
     margin-top: 10px;

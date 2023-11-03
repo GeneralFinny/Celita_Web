@@ -200,11 +200,9 @@ document.addEventListener('DOMContentLoaded', function () {
         userMessage.textContent = inputText;
         userMessage.title = `Sent at ${getCurrentTime()}`;
 
-        const userIcon = document.createElement('img');
-        userIcon.src = 'user.png';
-        userIcon.className = 'user-icon';
+   
 
-        messageContainer.appendChild(userIcon);
+     
         messageContainer.appendChild(userMessage);
         chatContainer.appendChild(messageContainer);
 
