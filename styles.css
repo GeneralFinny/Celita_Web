@@ -189,7 +189,7 @@ body, html {
     color: #fff;
     font-size: 20px;
     background-color: #590fe4 !important;
-    max-width: 70%;
+    max-width: 90%;
     margin: 10px 5px;
     margin-right: 15px;
     padding: 15px;
@@ -204,6 +204,7 @@ body, html {
     color: #ffffff;
     font-size: 20px;
     margin: 10px 5px;
+    max-width: 90%;
     padding: 15px;
     border-radius: 50px;
     margin-bottom: 1px;
