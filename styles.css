@@ -121,7 +121,7 @@ body, html {
     padding: 10px;
     padding-left: 20px;
     padding-top: 0px;
-    height: 100px; /* Adjust the height as needed */
+    height: 65px; /* Adjust the height as needed */
     box-shadow: 0 4px 6px rgba(21, 4, 46, 0.1);
     background-color: #07031d;
     z-index: 1;

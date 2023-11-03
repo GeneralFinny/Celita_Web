@@ -498,63 +498,91 @@ function updateBotMessageWithAnimation(translatedText) {
 
     
 });
-let mediaRecorder;
-let recordedChunks = [];
+let audioContext;
+let mediaStreamSource;
+let recorder;
+let mediaStream;
 
 function toggleMic() {
-    var micButton = document.getElementById('mic-button');
-    var isMicOn = micButton.classList.contains('active');
+  var micButton = document.getElementById('mic-button');
+  var isMicOn = micButton.classList.contains('active');
 
-    if (!isMicOn) {
-        // Change the mic icon to indicate that it's on
-        micButton.classList.add('active');
-        console.log('Mic is now on');
+  if (!isMicOn) {
+    // Change the mic icon to indicate that it's on
+    micButton.classList.add('active');
+    console.log('Mic is now on');
 
-        // Implement the action you want when the mic is on
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(function (stream) {
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.ondataavailable = function (event) {
-                    recordedChunks.push(event.data);
-                };
-                mediaRecorder.start();
-            });
-    } else {
-        // Change the mic icon to indicate that it's off
-        micButton.classList.remove('active');
-        console.log('Mic is now off');
+    // Clear the translation form
+    document.getElementById('input-text').value = '';
 
-        // Implement the action you want when the mic is off
-        if (mediaRecorder) {
-            mediaRecorder.stop();
-            mediaRecorder.onstop = function () {
-                const blob = new Blob(recordedChunks, { type: 'audio/wav' });
-
-                // Send the blob to the Flask server
-                const formData = new FormData();
-                formData.append('file', blob, 'recorded.wav');
-                fetch('https://celitasiumoverdrive.pythonanywhere.com/upload', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.transcription) {
-                        document.getElementById('input-text').value = data.transcription;  // Display the transcription in the input field
-                    } else {
-                        console.error(data.error);  // Handle the error appropriately
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            };
-
-            // Release the media resources
-            if (mediaRecorder && mediaRecorder.stream) {
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
-            }
-
-            // Reset the recorded chunks
-            recordedChunks = [];
+    // Implement the action you want when the mic is on
+    const constraints = {
+        audio: {
+          sampleRate: 44100,  // Adjust the sample rate as needed
+          channelCount: 2,  // Set the number of audio channels
+          echoCancellation: true,  // Enable echo cancellation if necessary
+          noiseSuppression: true  // Enable noise suppression if required
         }
+      };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+      .then(function (stream) {
+        audioContext = new AudioContext();
+        mediaStream = stream;
+        mediaStreamSource = audioContext.createMediaStreamSource(stream);
+        recorder = new Recorder(mediaStreamSource);
+        recorder.record();
+      })
+      .catch(function (err) {
+        console.error('Error: ' + err);
+      });
+  } else {
+    // Change the mic icon to indicate that it's off
+    micButton.classList.remove('active');
+    console.log('Mic is now off');
+
+    // Clear the translation form
+    document.getElementById('input-text').value = '';
+
+    // Implement the action you want when the mic is off
+    if (recorder) {
+      recorder.stop();
+      recorder.exportWAV(function (blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        a.href = url;
+        a.download = 'recorded.wav';
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        // Send the blob to the Flask server for further processing
+        const formData = new FormData();
+        formData.append('file', blob, 'recorded.wav');
+        fetch('http://127.0.0.1:5000/upload', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.transcription) {
+              document.getElementById('input-text').value = data.transcription;  // Display the transcription in the input field
+            } else {
+              console.error(data.error);  // Handle the error appropriately
+            }
+          })
+          .catch(error => console.error('Error:', error));
+        
+        // Release the media resources
+        if (mediaStream) {
+          mediaStream.getTracks().forEach(track => track.stop());
+        }
+        if (audioContext) {
+          audioContext.close();
+        }
+      });
     }
+  }
 }
+
