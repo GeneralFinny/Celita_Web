@@ -17,7 +17,7 @@ h3 {
     color: #ffffff; /* Set the text color */
     text-align: center; /* Center the text */
     font-size: 20px; /* Set the font size */
-    margin-top: 10px; /* Add margin to the top */
+    margin-top: 30px; /* Add margin to the top */
     position: relative;
     top: 10px;
     margin-left: 30px;
@@ -26,6 +26,7 @@ h3 {
 }
 
 #options-button {
+    margin-top: 20px;
     width: 10px;
     height: 10px;
     background-color: transparent;
