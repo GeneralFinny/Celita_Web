@@ -405,6 +405,11 @@ body, html {
     font-size: 18px;
     box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
+#feedback-form input[type="text"]:focus {
+    outline: none;
+}
+
+
 /* Styles for the close button */
 #close-feedback {
     position: absolute;
