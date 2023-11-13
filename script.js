@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholderMessage = displayBotPlaceholderMessage();
 
         // Perform the translation fetch
-        fetch("https://celitasiumoverdrive.pythonanywhere.com/translate", {
+        fetch("https://celitasiumbonaparte.pythonanywhere.com/translate", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
